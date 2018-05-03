@@ -9,6 +9,7 @@ https://gist.github.com/ihoneymon/652be052a0727ad59601
 저장소 운영 방식
 -------------------
 1.폴더별로 작은 프로젝트를 관리한다.
+2. 개인적인 테스트용 프로젝트는 본인 nickname폴더 아래에 만든다.(예: /kyungup/android_app_eth_test/
 
 
 진행 프로젝트
