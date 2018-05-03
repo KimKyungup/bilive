@@ -19,7 +19,7 @@ https://gist.github.com/ihoneymon/652be052a0727ad59601
 * ETH 지갑
 * 지워지지않는 Text 새기기(QTUM -> ETH)
   
-2.POS(Qtum -> ETH -> ...)
+2. POS(Qtum -> ETH -> ...)
 * smartcontract: token 스마트계약(solidity)
 * app : 노드 운영 app(nodejs)
   
