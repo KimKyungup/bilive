@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "788606128673",
+    "firebase_url": "https://qtum-2210a.firebaseio.com",
+    "project_id": "qtum-2210a",
+    "storage_bucket": "qtum-2210a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788606128673:android:0f38015ba08d39d9",
+        "android_client_info": {
+          "package_name": "org.qtum.wallet.qa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788606128673-u1lecav7crmb8qfu2scdht0a7f2bda3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbBYRvGrVwCQb6tNAZybHmO0iat2TX9xQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
