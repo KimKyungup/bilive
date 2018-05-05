@@ -18,6 +18,8 @@ https://gist.github.com/ihoneymon/652be052a0727ad59601
 * Qtum 지갑
 * ETH 지갑
 * 지워지지않는 Text 새기기(QTUM -> ETH)
+- kyungup : ETH Test App 코드
+- nogang : QTUM Base 코드부터 주작업 진행
   
 2. POS(Qtum -> ETH -> ...)
 * smartcontract: token 스마트계약(solidity)
