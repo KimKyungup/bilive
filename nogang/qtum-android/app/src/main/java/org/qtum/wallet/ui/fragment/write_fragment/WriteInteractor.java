@@ -21,7 +21,7 @@ public interface WriteInteractor {
     void sendTx(String txHex, WriteInteractorImpl.SendTxCallBack callBack);
 
     String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
-    String createTransactionHash(String abiParams, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, BigDecimal feePerKb, String fee, final String contractAddress, String sendToContract);
+
     BigDecimal getFeePerKb();
     void getUnspentOutputs(String address, final WriteInteractorImpl.GetUnspentListCallBack callBack);
     //void getUnspentOutputs(WriteInteractorImpl.GetUnspentListCallBack callBack);

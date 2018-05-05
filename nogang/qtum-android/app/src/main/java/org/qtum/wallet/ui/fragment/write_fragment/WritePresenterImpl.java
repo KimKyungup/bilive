@@ -1,26 +1,19 @@
 package org.qtum.wallet.ui.fragment.write_fragment;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import com.subgraph.orchid.encoders.Hex;
-
-import org.qtum.wallet.datastorage.HistoryList;
-import org.qtum.wallet.datastorage.NewsStorage;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.history.Vout;
-import org.qtum.wallet.model.news.News;
-import org.qtum.wallet.model.news.RssFeed;
+import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsInteractor;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsView;
+import org.qtum.wallet.utils.DateCalculator;
 
 import java.math.BigInteger;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscriber;
@@ -41,15 +34,20 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
 
     public void write() {
         mWriteText = mWriteFragmentView.getWriteText();
-
         //createTx(Hex.encode(mWriteText.getBytes()).toString(), "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", 2000000, 100000, "0.1");
+        String s = mWriteText.toString();
 
-        String text = hexToString(mWriteText.toString());
+        while(s.getBytes().length < 5){
+            s += " ";
+        }
 
-
+        String text = hexToString(s);
 
         //createTx(text, "494048b0fed64a1acfc390038aa2ad54d27ab1de", "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", 200000, 40, "0.1");
-        createTx(text, "494048b0fed64a1acfc111111111111111111111", "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", 200000, 40, "0.01");
+        //createTx(text, "494048b0fed64a1acfc111111111111111111111", "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", 200000, 40, "0.01");
+        createTx(text, "494048b0fed64a1acfc111111111111111111111", "", 200000, 40, "0.01");
+
+
     }
 
     public String hexToString(String s) {
@@ -91,7 +89,7 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
     @Override
     public void onRefresh() {
         if (mNetworkConnectedFlag) {
-            loadAndUpdateNews();
+            loadAndUpdateWrite();
         } else {
             getView().setAlertDialog(org.qtum.wallet.R.string.no_internet_connection,
                     org.qtum.wallet.R.string.please_check_your_network_settings,
@@ -106,10 +104,10 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
 
         mNetworkConnectedFlag = networkConnectedFlag;
         if (networkConnectedFlag) {
-            loadAndUpdateNews();
+            loadAndUpdateWrite();
         } else {
-            getView().updateNews(getInteractor().getNewses());
-            NewsStorage.newInstance().setNewses(getInteractor().getNewses());
+            //getView().updateWriteBlocks(getInteractor().getNewses());
+            //NewsStorage.newInstance().setNewses(getInteractor().getNewses());
         }
 
     }
@@ -120,7 +118,7 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
                 String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice, fee);
-                getView().tost(txHex);
+                //getView().tost(txHex);
                 getInteractor().sendTx(txHex, getView().getSendTransactionCallback());
             }
 
@@ -130,10 +128,10 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
                 getView().setAlertDialog(org.qtum.wallet.R.string.error, error, "Ok", BaseFragment.PopUpType.error);
             }
         });
-
     }
 
-    private void loadAndUpdateNews() {
+    @Override
+    public void loadAndUpdateWrite() {
 
         getView().startRefreshAnimation();
         getInteractor().getHistoryResponse("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ",25, 0)
@@ -151,6 +149,7 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
 
                     @Override
                     public void onNext(HistoryResponse historyResponse) {
+                        ArrayList<WriteBlock> writeBlockList = new ArrayList<>();
 
                         Log.d("nogang", historyResponse.getItems().get(0).getTxHash());
                         for (History history : historyResponse.getItems()) {
@@ -158,47 +157,23 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
                                 if (vout.getAddress().equals("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ")) {
                                     String[] s = vout.getPubKey().split(" ");
                                     Log.d("post", hexToUTF8(s[3]));
+                                    WriteBlock writeBlcok = new WriteBlock();
+                                    writeBlcok.setWrite(hexToUTF8(s[3]));
+                                    try{
+                                        writeBlcok.setBlockTime(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
+                                        writeBlcok.setmBlockHash(history.getBlockHash());
+                                    }catch(Exception e) {
+                                        writeBlcok.setBlockTime("unconfirmed");
+                                        writeBlcok.setmBlockHash("");
+                                    }
+                                    writeBlockList.add(writeBlcok);
                                 }
                             }
                         }
-                    }
-                });
 
-
-        getView().startRefreshAnimation();
-        getInteractor().getMediumRssFeed()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<RssFeed>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(RssFeed rssFeed) {
-                        List<News> newNews = rssFeed.getNewses();
-                        List<News> oldNews = getInteractor().getNewses();
-                        if (oldNews.size() == 0) {
-                            oldNews.addAll(newNews);
-                        } else {
-                            int pos = 0;
-                            News lastNews = oldNews.get(0);
-                            for (News news : newNews) {
-                                if (!news.getPubDate().equals(lastNews.getPubDate())) {
-                                    oldNews.add(pos, news);
-                                    pos++;
-                                } else {
-                                    break;
-                                }
-                            }
-                        }
-                        NewsStorage.newInstance().setNewses(oldNews);
-                        getInteractor().setNewses(oldNews);
-                        getView().updateNews(oldNews);
+                        //NewsStorage.newInstance().setNewses(oldNews);
+                        //getInteractor().setNewses(writeBlockList);
+                        getView().updateWriteBlocks(writeBlockList);
                     }
                 });
 

@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.write_fragment;
 
 import org.qtum.wallet.model.news.News;
+import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface WriteView extends BaseFragmentView {
 
     void setAdapterNull();
 
-    void updateNews(List<News> newses);
+    void updateWriteBlocks(List<WriteBlock> writeblocks);
 
     void stopRefreshRecyclerAnimation();
 

@@ -230,7 +230,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void resetMenuText() {
-        int[] menuResources = new int[]{R.string.wallet, R.string.profile, R.string.news, R.string.send};
+        int[] menuResources = new int[]{R.string.wallet, R.string.profile, R.string.write, R.string.send};
         Menu menu = mBottomNavigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setTitle(getResources().getString(menuResources[i]));

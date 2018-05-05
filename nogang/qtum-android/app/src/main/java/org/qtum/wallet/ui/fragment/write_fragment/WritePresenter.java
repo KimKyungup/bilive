@@ -9,4 +9,5 @@ public interface WritePresenter extends BaseFragmentPresenter {
     void onNetworkStateChanged(boolean networkConnectedFlag);
 
     void write();
+    void loadAndUpdateWrite();
 }

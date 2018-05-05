@@ -1,5 +1,6 @@
 package org.qtum.wallet.ui.fragment.write_fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -19,6 +20,7 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.model.news.News;
+import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 import org.qtum.wallet.ui.fragment.news_fragment.NewsInteractorImpl;
@@ -34,7 +36,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public abstract class WriteFragment extends BaseFragment implements WriteView {
-
     private WritePresenter mWriteFragmentPresenter;
     protected WriteAdapter mWriteAdapter;
 
@@ -61,7 +62,7 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
 
     @OnClick(R.id.bt_write)
     public void onWriteClick() {
-        Toast.makeText(getContext(),"eee",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(),"eee",Toast.LENGTH_LONG).show();
         /*
         if (mSeekBar != null) {
             textViewChangeValue = true;
@@ -70,7 +71,9 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
             mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
         }
         */
+        hideKeyBoard();
         getPresenter().write();
+        mTextWrite.setText("");
     }
     
     @Override
@@ -151,22 +154,22 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
             ButterKnife.bind(this, itemView);
         }
 
-        void bindNews(News news) {
-            mTextViewTitle.setText(news.getTitle());
-            mTextViewDate.setText(news.getFormattedPubDate());
-            mTextViewDescription.setText(news.getDocument().select("p").get(0).text());
+        void bindWriteBlocks(WriteBlock writeBlock) {
+            mTextViewTitle.setText(writeBlock.getmBlockHash());
+            mTextViewDate.setText(writeBlock.getBlockTime());
+            mTextViewDescription.setText(writeBlock.getWrite());
         }
     }
     
     public class WriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private List<News> mNewsList;
-        News mNews;
+        private List<WriteBlock> mWriteBlcokList;
+        WriteBlock mWriteBlock;
         private @LayoutRes
         int mResId;
 
-        public WriteAdapter(List<News> newsList, @LayoutRes int resId) {
-            mNewsList = newsList;
+        public WriteAdapter(List<WriteBlock> writeBlockList, @LayoutRes int resId) {
+            mWriteBlcokList = writeBlockList;
             mResId = resId;
         }
 
@@ -179,14 +182,14 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            mNews = mNewsList.get(position);
-            ((NewsHolder) holder).bindNews(mNews);
+            mWriteBlock = mWriteBlcokList.get(position);
+            ((NewsHolder) holder).bindWriteBlocks(mWriteBlock);
 
         }
 
         @Override
         public int getItemCount() {
-            return mNewsList.size();
+            return mWriteBlcokList.size();
         }
     }
 
@@ -216,6 +219,7 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
         @Override
         public void onSuccess() {
             setAlertDialog(org.qtum.wallet.R.string.payment_completed_successfully, "Ok", BaseFragment.PopUpType.confirm);
+            getPresenter().loadAndUpdateWrite();
         }
 
         @Override

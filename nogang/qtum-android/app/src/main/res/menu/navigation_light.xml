@@ -16,7 +16,7 @@
     <item
         android:id="@+id/item_news"
         android:icon="@drawable/ic_news_light"
-        android:title="@string/news"
+        android:title="@string/write"
         app:showAsAction="always|withText"/>
 
     <item
