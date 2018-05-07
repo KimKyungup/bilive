@@ -15,13 +15,6 @@ import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
-import org.qtum.wallet.model.gson.qstore.ContractPurchase;
-import org.qtum.wallet.model.gson.qstore.QSearchItem;
-import org.qtum.wallet.model.gson.qstore.QstoreBuyResponse;
-import org.qtum.wallet.model.gson.qstore.QstoreByteCodeResponse;
-import org.qtum.wallet.model.gson.qstore.QstoreContract;
-import org.qtum.wallet.model.gson.qstore.QstoreItem;
-import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 
 import java.util.HashMap;
@@ -63,35 +56,8 @@ interface QtumRestService {
     @GET("/transactions/{tx_hash}")
     Observable<History> getTransaction(@Path("tx_hash") String txHash);
 
-    @GET("/contracts/trending-now")
-    Observable<List<QstoreItem>> getTrendingNow();
-
-    @GET("/contracts/last-added")
-    Observable<List<QstoreItem>> getWatsNew();
-
-    @GET("/contracts/{count}/{offset}")
-    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("type") String type, @Query("tags[]") String[] tags); //by tag
-
-    @GET("/contracts/{count}/{offset}")
-    Observable<List<QSearchItem>> getSearchContracts(@Path("count") int count, @Path("offset") int offset, @Query("type") String type, @Query("name") String name); //by name
-
-    @GET("/contracts/{contract_id}")
-    Observable<QstoreContract> getContract(@Path("contract_id") String contractId);
-
-    @POST("/contracts/{contract_id}/source-code")
-    Observable<QstoreSourceCodeResponse> getSourceCode(@Path("contract_id") String contractId, @Body HashMap<String, String> body);
-
-    @POST("/contracts/{contract_id}/bytecode")
-    Observable<QstoreByteCodeResponse> getByteCode(@Path("contract_id") String contractId, @Body HashMap<String, String> body);
-
     @GET("/contracts/{contract_id}/abi")
     Observable<Object> getAbiByContractId(@Path("contract_id") String contractId);
-
-    @POST("/contracts/{contract_id}/buy-request")
-    Observable<QstoreBuyResponse> buyRequest(@Path("contract_id") String contractId);
-
-    @GET("/contracts/{contract_id}/is-paid/by-request-id")
-    Observable<ContractPurchase> isPaidByRequestId(@Path("contract_id") String contractId, @Query("request_id") String requestId);
 
     @GET("/estimate-fee-per-kb")
     Observable<FeePerKb> getEstimateFeePerKb(@Query("nBlocks") int nBlocks);

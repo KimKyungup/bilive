@@ -59,7 +59,7 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getMainActivity().setIconChecked(0);
+        getMainActivity().setIconChecked(1);
     }
 
     @Override
@@ -135,13 +135,11 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
 
         @Override
         public Fragment getItem(int position) {
+            //Todo : viewPager main Activity 에 적용
             switch (position) {
                 case 0:
                     mWalletFragment = (WalletFragment) WalletFragment.newInstance(getContext());
                     return mWalletFragment;
-                case 1:
-                    mOtherTokensFragment = (OtherTokensFragment) OtherTokensFragment.newInstance(getContext());
-                    return mOtherTokensFragment;
                 default:
                     return null;
             }

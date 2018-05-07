@@ -31,32 +31,29 @@ import org.qtum.wallet.dataprovider.firebase.FirebaseSharedPreferences;
 import org.qtum.wallet.dataprovider.firebase.listeners.FireBaseTokenRefreshListener;
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.BalanceChangeListener;
-import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.contract.ContractCreationStatus;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.history.Vin;
 import org.qtum.wallet.model.gson.history.Vout;
-import org.qtum.wallet.model.gson.qstore.PurchaseItem;
+
 import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
-import org.qtum.wallet.utils.BoughtContractBuilder;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.dataprovider.services.update_service.listeners.ContractPurchaseListener;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenListener;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TransactionListener;
 import org.qtum.wallet.model.contract.Contract;
 import org.qtum.wallet.model.contract.Token;
 import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenBalanceChangeListener;
 import org.qtum.wallet.model.gson.history.History;
-import org.qtum.wallet.model.gson.qstore.ContractPurchase;
+
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.utils.ContractBuilder;
 import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.DateCalculator;
-import org.qtum.wallet.utils.QtumIntent;
+import org.qtum.wallet.utils.AppIntent;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -95,7 +92,6 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private HashMap<String, List<TokenBalanceChangeListener>> mStringTokenBalanceChangeListenerHashMap = new HashMap<>();
     private HashMap<String, TokenBalance> mAllTokenBalanceList = new HashMap<>();
     private TokenListener mTokenListener;
-    private ContractPurchaseListener mContractPurchaseListener;
     private boolean monitoringFlag = false;
     private Notification notification;
     private Socket socket;
@@ -181,7 +177,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         }
 
         checkConfirmContract();
-        checkPurchaseContract();
+        //checkPurchaseContract();
 
         firebaseTokens = FirebaseSharedPreferences.getInstance().getFirebaseTokens(getApplicationContext());
         mFirebasePrevToken = firebaseTokens[0];
@@ -306,26 +302,6 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
                 updateTokenBalance(tokenBalance);
 
             }
-        }).on("contract_purchase", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                Gson gson = new Gson();
-                JSONObject data = (JSONObject) args[0];
-                final ContractPurchase objectData = gson.fromJson(data.toString(), ContractPurchase.class);
-
-                BoughtContractBuilder boughtContractBuilder = new BoughtContractBuilder();
-                boughtContractBuilder.build(getApplicationContext(), objectData, new BoughtContractBuilder.ContractBuilderListener() {
-                    @Override
-                    public void onBuildSuccess() {
-                        QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(objectData.getContractId(), PurchaseItem.PAID_STATUS);
-                    }
-                });
-
-                if (mContractPurchaseListener != null) {
-                    mContractPurchaseListener.onContractPurchased(objectData);
-                }
-
-            }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -432,43 +408,6 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         }
     }
 
-    private void checkPurchaseContract() {
-        for (final PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()) {
-            QtumService.newInstance()
-                    .isPaidByRequestId(purchaseItem.getContractId(), purchaseItem.getRequestId())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Subscriber<ContractPurchase>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                        }
-
-                        @Override
-                        public void onNext(ContractPurchase contractPurchase) {
-                            if (contractPurchase.getPayedAt() != null) {
-                                QStoreStorage.getInstance(getApplicationContext()).setPurchaseItemBuyStatus(purchaseItem.getContractId(), PurchaseItem.PAID_STATUS);
-
-                                BoughtContractBuilder boughtContractBuilder = new BoughtContractBuilder();
-                                boughtContractBuilder.build(getApplicationContext(), contractPurchase, new BoughtContractBuilder.ContractBuilderListener() {
-                                    @Override
-                                    public void onBuildSuccess() {
-                                        int i = 0;
-                                    }
-                                });
-
-                                if (mContractPurchaseListener != null) {
-                                    mContractPurchaseListener.onContractPurchased(contractPurchase);
-                                }
-                            }
-                        }
-                    });
-        }
-
-    }
-
     private void checkConfirmContract() {
         final TinyDB tinyDB = new TinyDB(getApplicationContext());
         final ArrayList<String> unconfirmedContractTxHashList = tinyDB.getUnconfirmedContractTxHasList();
@@ -542,13 +481,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
         for (Contract contract : (new TinyDB(getApplicationContext())).getContractList()) {
             subscribeTokenBalanceChange(contract.getContractAddress(), mFirebasePrevToken, mFirebaseCurrentToken);
         }
-        subscribeStoreContracts();
-    }
-
-    private void subscribeStoreContracts() {
-        for (PurchaseItem purchaseItem : QStoreStorage.getInstance(getApplicationContext()).getNonPayedContracts()) {
-            socket.emit("subscribe", "contract_purchase", purchaseItem.getRequestId());
-        }
+        //subscribeStoreContracts();
     }
 
     public void subscribeStoreContract(String id) {
@@ -633,7 +566,7 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
     private void sendNotification(String Ticker, String Title, String Text, Uri sound) {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(QtumIntent.OPEN_FROM_NOTIFICATION);
+        notificationIntent.setAction(AppIntent.OPEN_FROM_NOTIFICATION);
 
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -689,14 +622,6 @@ public class UpdateService extends Service implements GoogleApiClient.Connection
 
     public void removeTokenListener() {
         mTokenListener = null;
-    }
-
-    public void setContractPurchaseListener(ContractPurchaseListener contractPurchaseListener) {
-        this.mContractPurchaseListener = contractPurchaseListener;
-    }
-
-    public void removeContractPurchaseListener() {
-        this.mContractPurchaseListener = null;
     }
 
     public void addTokenBalanceChangeListener(String address, TokenBalanceChangeListener tokenBalanceChangeListener) {

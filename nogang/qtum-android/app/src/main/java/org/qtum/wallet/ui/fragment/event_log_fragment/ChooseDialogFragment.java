@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.subgraph.orchid.encoders.Hex;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.model.gson.history.DisplayedData;
-import org.qtum.wallet.utils.ThemeUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -59,7 +57,7 @@ public class ChooseDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? R.layout.dialog_fragment_choose : R.layout.dialog_fragment_choose_light, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_fragment_choose, null);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

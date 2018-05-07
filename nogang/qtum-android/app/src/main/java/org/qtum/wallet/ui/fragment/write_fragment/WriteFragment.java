@@ -20,7 +20,6 @@ import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStat
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import java.util.List;
@@ -161,8 +160,9 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(), getAdapterPosition());
-                    openFragment(newsDetailFragment);
+                    //Todo : Write 클릭시 세부 내용 보여주는 fragment 작성
+                    //BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(), getAdapterPosition());
+                    //openFragment(newsDetailFragment);
                 }
             });
             ButterKnife.bind(this, itemView);

@@ -96,7 +96,6 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
         };
 
         getInteractor().addLanguageChangeListener(mLanguageChangeListener);
-
         openStartFragment();
     }
 
@@ -115,44 +114,8 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
     @Override
     public void updateNetworkSate(boolean networkConnectedFlag) {
         if (networkConnectedFlag) {
-            if (!getInteractor().isDGPInfoLoaded()) {
-                getInteractor().getDGPInfo()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<DGPInfo>() {
-                            @Override
-                            public void onCompleted() {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                            }
-
-                            @Override
-                            public void onNext(DGPInfo dgpInfo) {
-                                getInteractor().setDGPInfo(dgpInfo);
-                            }
-                        });
-            }
-            if (!getInteractor().isFeePerkbLoaded()) {
-                getInteractor().getFeePerKb()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<FeePerKb>() {
-                            @Override
-                            public void onCompleted() {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                            }
-
-                            @Override
-                            public void onNext(FeePerKb feePerKb) {
-                                getInteractor().setFeePerKb(feePerKb);
-                            }
-                        });
-            }
+            updateQutumDGFInfo();
+            updateQtumFreePerKB();
         }
     }
 
@@ -172,5 +135,48 @@ public class MainActivityPresenterImpl extends BasePresenterImpl implements Main
         getInteractor().clearStatic();
         getView().clearService();
         getInteractor().removeLanguageChangeListener(mLanguageChangeListener);
+    }
+
+    private void updateQutumDGFInfo(){
+        if (!getInteractor().isDGPInfoLoaded()) {
+            getInteractor().getDGPInfo()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<DGPInfo>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(DGPInfo dgpInfo) {
+                            getInteractor().setDGPInfo(dgpInfo);
+                        }
+                    });
+        }
+    }
+    private void updateQtumFreePerKB(){
+        if (!getInteractor().isFeePerkbLoaded()) {
+            getInteractor().getFeePerKb()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<FeePerKb>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(FeePerKb feePerKb) {
+                            getInteractor().setFeePerKb(feePerKb);
+                        }
+                    });
+        }
     }
 }

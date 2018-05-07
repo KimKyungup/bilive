@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
 
-import org.qtum.wallet.datastorage.QStoreStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.migration_manager.MigrationManager;
@@ -39,7 +38,6 @@ public class QtumApplication extends MultiDexApplication{
             Fabric.with(this, new Crashlytics());
         }
         FontManager.init(getAssets());
-        QStoreStorage.getInstance(getApplicationContext());
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         Realm.init(this);

@@ -18,13 +18,7 @@ import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.history.TransactionReceipt;
-import org.qtum.wallet.model.gson.qstore.ContractPurchase;
-import org.qtum.wallet.model.gson.qstore.QSearchItem;
-import org.qtum.wallet.model.gson.qstore.QstoreBuyResponse;
-import org.qtum.wallet.model.gson.qstore.QstoreByteCodeResponse;
-import org.qtum.wallet.model.gson.qstore.QstoreContract;
-import org.qtum.wallet.model.gson.qstore.QstoreItem;
-import org.qtum.wallet.model.gson.qstore.QstoreSourceCodeResponse;
+
 import org.qtum.wallet.model.gson.token_history.TokenHistoryResponse;
 import org.qtum.wallet.utils.CurrentNetParams;
 
@@ -164,55 +158,14 @@ public class QtumService {
         return mServiceApi.getTransaction(txHash);
     }
 
-    public Observable<List<QstoreItem>> getTrendingNow() {
-        return mServiceApi.getTrendingNow();
-    }
 
-    public Observable<List<QstoreItem>> getWatsNew() {
-        return mServiceApi.getWatsNew();
-    }
-
-    public Observable<List<QSearchItem>> searchContracts(int offset, String type, String data, boolean byTag) {
-        if (byTag) {
-            return mServiceApi.getSearchContracts(20, offset, type, new String[]{data});
-        } else {
-            return mServiceApi.getSearchContracts(20, offset, type, data);
-        }
-    }
-
-    public Observable<QstoreContract> getContractById(String id) {
-        return mServiceApi.getContract(id);
-    }
 
     public Observable<Object> getAbiByContractId(String contractId) {
         return mServiceApi.getAbiByContractId(contractId);
     }
 
-    public Observable<QstoreBuyResponse> buyRequest(String contractId) {
-        return mServiceApi.buyRequest(contractId);
-    }
-
-    public Observable<ContractPurchase> isPaidByRequestId(String contractId, String requestId) {
-        return mServiceApi.isPaidByRequestId(contractId, requestId);
-    }
-
     public Observable<DGPInfo> getDGPInfo() {
         return mServiceApi.getDGPInfo();
-    }
-
-    public Observable<QstoreSourceCodeResponse> getSourceCode(String contractId, String requestId, String accessToken) {
-
-        HashMap<String, String> body = new HashMap<>();
-        body.put("request_id", requestId);
-        body.put("access_token", accessToken);
-        return mServiceApi.getSourceCode(contractId, body);
-    }
-
-    public Observable<QstoreByteCodeResponse> getByteCode(String contractId, String requestId, String accessToken) {
-        HashMap<String, String> body = new HashMap<>();
-        body.put("request_id", requestId);
-        body.put("access_token", accessToken);
-        return mServiceApi.getByteCode(contractId, body);
     }
 
     public Observable<List<QstoreContractType>> getContractTypes() {

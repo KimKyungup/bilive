@@ -11,7 +11,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +22,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.qtum.wallet.ui.fragment.processing_dialog.ProcessingDialogFragmentDark;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.fragment.processing_dialog.ProcessingDialogFragment;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.utils.FontButton;
 import org.qtum.wallet.utils.FontTextView;
-import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +61,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void setProgressDialog() {
         hideKeyBoard();
-        mProcessingDialog = Factory.getProcessingDialog(getContext());
+        mProcessingDialog = new ProcessingDialogFragmentDark();
         mProcessingDialog.show(getFragmentManager(), mProcessingDialog.getClass().getCanonicalName());
     }
 
@@ -130,7 +129,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         try {
             dismissProgressDialog();
             dismissAlertDialog();
-            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? org.qtum.wallet.R.layout.dialog_popup_fragment : org.qtum.wallet.R.layout.dialog_popup_fragment_light, null);
+            View view = LayoutInflater.from(getContext()).inflate(org.qtum.wallet.R.layout.dialog_popup_fragment, null);
 
             FontTextView tvTitle = ((FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_pop_up_title));
             tvTitle.setText(title);
@@ -152,27 +151,15 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 }
             });
 
-            if (ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
-                switch (type.name()) {
-                    case "error":
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_error);
-                        view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.VISIBLE);
-                        break;
-                    case "confirm":
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirm);
-                        view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.GONE);
-                        break;
-                }
-            } else {
-                switch (type.name()) {
-                    case "error":
-                        tvTitle.setTextColor(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.title_red_color));
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_popup_error_light);
-                        break;
-                    case "confirm":
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirmed_light);
-                        break;
-                }
+            switch (type.name()) {
+                case "error":
+                    icon.setImageResource(org.qtum.wallet.R.drawable.ic_error);
+                    view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.VISIBLE);
+                    break;
+                case "confirm":
+                    icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirm);
+                    view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.GONE);
+                    break;
             }
 
             mAlertDialog = new AlertDialog
@@ -206,7 +193,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
         try {
             dismissProgressDialog();
             dismissAlertDialog();
-            View view = LayoutInflater.from(getContext()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? org.qtum.wallet.R.layout.dialog_popup_fragment : org.qtum.wallet.R.layout.dialog_popup_fragment_light, null);
+            View view = LayoutInflater.from(getContext()).inflate(org.qtum.wallet.R.layout.dialog_popup_fragment, null);
 
             FontTextView tvTitle = ((FontTextView) view.findViewById(org.qtum.wallet.R.id.tv_pop_up_title));
             tvTitle.setText(title);
@@ -240,27 +227,15 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
                 }
             });
 
-            if (ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK)) {
-                switch (type.name()) {
-                    case "error":
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_error);
-                        view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.VISIBLE);
-                        break;
-                    case "confirm":
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirm);
-                        view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.GONE);
-                        break;
-                }
-            } else {
-                switch (type.name()) {
-                    case "error":
-                        tvTitle.setTextColor(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.title_red_color));
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_popup_error_light);
-                        break;
-                    case "confirm":
-                        icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirmed_light);
-                        break;
-                }
+            switch (type.name()) {
+                case "error":
+                    icon.setImageResource(org.qtum.wallet.R.drawable.ic_error);
+                    view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.VISIBLE);
+                    break;
+                case "confirm":
+                    icon.setImageResource(org.qtum.wallet.R.drawable.ic_confirm);
+                    view.findViewById(org.qtum.wallet.R.id.red_line).setVisibility(View.GONE);
+                    break;
             }
 
             mAlertDialog = new AlertDialog

@@ -11,12 +11,11 @@ import org.qtum.wallet.datastorage.TinyDB;
 import org.qtum.wallet.model.gson.SendRawTransactionRequest;
 import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
-import org.qtum.wallet.model.gson.history.History;
+
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsInteractor;
-import org.qtum.wallet.ui.fragment.send_fragment.SendInteractorImpl;
+
 import org.qtum.wallet.utils.ContractBuilder;
 
 import java.lang.ref.WeakReference;
