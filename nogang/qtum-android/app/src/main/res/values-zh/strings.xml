@@ -19,7 +19,7 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="enter_name">输入名称</string>
-    <string name="profile">我</string>
+    <string name="setting">我</string>
     <string name="wallet">钱包</string>
     <string name="news">资讯</string>
     <string name="create_pin">创建 PIN</string>

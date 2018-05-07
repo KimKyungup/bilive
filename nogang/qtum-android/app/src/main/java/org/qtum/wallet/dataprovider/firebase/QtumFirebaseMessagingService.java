@@ -13,7 +13,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.qtum.wallet.QtumApplication;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
-import org.qtum.wallet.utils.QtumIntent;
+import org.qtum.wallet.utils.AppIntent;
 
 public class QtumFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -29,7 +29,7 @@ public class QtumFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String Ticker, String Title, String Text) {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(QtumIntent.OPEN_FROM_NOTIFICATION);
+        notificationIntent.setAction(AppIntent.OPEN_FROM_NOTIFICATION);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentIntent(contentIntent)

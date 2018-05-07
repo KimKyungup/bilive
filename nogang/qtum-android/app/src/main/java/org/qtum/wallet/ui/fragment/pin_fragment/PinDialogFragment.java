@@ -21,7 +21,6 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.utils.CryptoUtilsCompat;
 import org.qtum.wallet.utils.PinEntryEditText;
-import org.qtum.wallet.utils.ThemeUtils;
 import org.qtum.wallet.utils.crypto.KeyStoreHelper;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
 import org.qtum.wallet.utils.CryptoUtils;
@@ -55,7 +54,7 @@ public class PinDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? org.qtum.wallet.R.layout.dialog_fragment_pin : org.qtum.wallet.R.layout.dialog_fragment_pin_light, null);
+        View view = LayoutInflater.from(getActivity()).inflate(org.qtum.wallet.R.layout.dialog_fragment_pin, null);
         ButterKnife.bind(this, view);
         Dialog dialog = new Dialog(getContext());
         dialog.setContentView(view);

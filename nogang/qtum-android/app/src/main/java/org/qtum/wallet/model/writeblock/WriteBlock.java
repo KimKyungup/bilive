@@ -3,14 +3,14 @@ package org.qtum.wallet.model.writeblock;
 public class WriteBlock {
     String mWrite = "";
     String mBlockTime = "";
-    String mBlockHash ="";
+    String mTXHash ="";
 
-    public String getmBlockHash() {
-        return mBlockHash;
+    public String getTXHash() {
+        return mTXHash;
     }
 
-    public void setmBlockHash(String mBlockHash) {
-        this.mBlockHash = mBlockHash;
+    public void setTXHash(String mTXHash) {
+        this.mTXHash = mTXHash;
     }
 
     public String getWrite() {

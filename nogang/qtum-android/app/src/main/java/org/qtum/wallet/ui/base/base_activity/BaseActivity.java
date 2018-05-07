@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import org.qtum.wallet.utils.ThemeUtils;
-
 import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseContextView {
@@ -21,9 +19,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
-        ThemeUtils.setAppTheme(this, ThemeUtils.getCurrentTheme(this));
-
         super.onCreate(savedInstanceState);
         createPresenter();
         getPresenter().onCreate();

@@ -11,15 +11,12 @@ import android.widget.TextView;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
-import org.qtum.wallet.ui.fragment.about_fragment.AboutFragment;
-import org.qtum.wallet.ui.fragment.language_fragment.LanguageFragment;
+
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
-import org.qtum.wallet.ui.fragment.smart_contracts_fragment.SmartContractsFragment;
+
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
-import org.qtum.wallet.ui.fragment.subscribe_tokens_fragment.SubscribeTokensFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.BindView;
 
@@ -56,7 +53,7 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getMainActivity().setIconChecked(1);
+        getMainActivity().setIconChecked(2);
         getPresenter().setupLanguageChangeListener(mLanguageChangeListener);
     }
 
@@ -74,23 +71,11 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
     public void onSettingClick(int key) {
         BaseFragment fragment = null;
         switch (key) {
-            case org.qtum.wallet.R.string.language:
-                fragment = LanguageFragment.newInstance(getContext());
-                break;
             case org.qtum.wallet.R.string.change_pin:
                 fragment = PinFragment.newInstance(CHANGING, getContext());
                 break;
             case org.qtum.wallet.R.string.wallet_backup:
                 fragment = PinFragment.newInstance(AUTHENTICATION_FOR_PASSPHRASE, getContext());
-                break;
-            case org.qtum.wallet.R.string.smart_contracts:
-                fragment = SmartContractsFragment.newInstance(getContext());
-                break;
-            case org.qtum.wallet.R.string.subscribe_tokens:
-                fragment = SubscribeTokensFragment.newInstance(getContext());
-                break;
-            case org.qtum.wallet.R.string.about:
-                fragment = AboutFragment.newInstance(getContext());
                 break;
             case org.qtum.wallet.R.string.log_out:
                 setAlertDialog(getString(R.string.warning), getString(R.string.you_are_about_to_exit_your_account_all_account_data_will_be_erased_from_the_device_please_make_sure_you_have_saved_backups_of_your_passphrase_and_required_contracts), "Cancel", "Logout", PopUpType.error, new AlertDialogCallBack() {
@@ -103,10 +88,6 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
                         onLogout();
                     }
                 });
-                break;
-            case org.qtum.wallet.R.string.switch_theme:
-                ThemeUtils.switchPreferencesTheme(getContext());
-                getMainActivity().reloadActivity();
                 break;
             default:
                 break;
@@ -164,6 +145,6 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
     @Override
     public void resetText() {
         adapter.notifyDataSetChanged();
-        mTextViewToolBar.setText(R.string.profile);
+        mTextViewToolBar.setText(R.string.setting);
     }
 }

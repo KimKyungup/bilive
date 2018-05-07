@@ -25,6 +25,7 @@ import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.touch_id_preference_fragment.TouchIDPreferenceFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
+import org.qtum.wallet.ui.fragment.write_fragment.WriteFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.CryptoUtils;
@@ -360,7 +361,7 @@ public abstract class PinFragment extends BaseFragment implements PinView {
 
     @Override
     public void openWalletMainFragment() {
-        Fragment fragment = WalletMainFragment.newInstance(getContext());
+        Fragment fragment = WriteFragment.newInstance(getContext());
         getMainActivity().setRootFragment(fragment);
         openRootFragment(fragment);
     }

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.utils.FontTextView;
-import org.qtum.wallet.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +71,7 @@ public class ShareDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate((ThemeUtils.getCurrentTheme(getContext()).equals(ThemeUtils.THEME_DARK) ? R.layout.lyt_view_share_abi_address : R.layout.lyt_view_share_abi_address_light), container, false);
+        View view = inflater.inflate(R.layout.lyt_view_share_abi_address, container, false);
         ButterKnife.bind(this, view);
         address.setText(getArguments().getString(ADDR));
         abi.setText(getArguments().getString(ABI));

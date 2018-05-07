@@ -43,7 +43,6 @@ import org.qtum.wallet.WearableMessagingProvider;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
-import org.qtum.wallet.dataprovider.services.update_service.WatchUpdateService;
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
@@ -51,7 +50,7 @@ import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsFragment;
+
 import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
@@ -63,8 +62,7 @@ import org.qtum.wallet.utils.FontManager;
 
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
-import org.qtum.wallet.utils.QtumIntent;
-import org.qtum.wallet.utils.ThemeUtils;
+import org.qtum.wallet.utils.AppIntent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -74,7 +72,6 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainActivityView, WearableMessagingProvider {
     private static final int LAYOUT = R.layout.activity_main;
-    private static final int LAYOUT_LIGHT = R.layout.activity_main_light;
     private MainActivityPresenter mMainActivityPresenterImpl;
     private ActivityResultListener mActivityResultListener;
     private PermissionsResultListener mPermissionsResultListener;
@@ -112,9 +109,9 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
             startActivity(intent);
             Log.d("BEST_TEST", savedInstanceState.toString());
         }
-        setContentView((ThemeUtils.THEME_DARK.equals(ThemeUtils.currentTheme)) ? LAYOUT : LAYOUT_LIGHT);
+        setContentView(LAYOUT);
         bindView();
-        updateTheme();
+        //
         mNetworkReceiver = new NetworkStateReceiver(getNetworkConnectedFlag());
         registerReceiver(mNetworkReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -144,7 +141,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         switch (intent.getAction()) {
-            case QtumIntent.OPEN_FROM_NOTIFICATION:
+            case AppIntent.OPEN_FROM_NOTIFICATION:
                 mRootFragment = WalletMainFragment.newInstance(getContext());
                 openRootFragment(mRootFragment);
                 setIconChecked(0);
@@ -230,7 +227,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void resetMenuText() {
-        int[] menuResources = new int[]{R.string.wallet, R.string.profile, R.string.write, R.string.send};
+        int[] menuResources = new int[]{R.string.write, R.string.wallet, R.string.setting, R.string.send};
         Menu menu = mBottomNavigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             menu.getItem(i).setTitle(getResources().getString(menuResources[i]));
@@ -320,9 +317,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void initializeViews() {
-
-        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK) ? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
-
+        updateTheme();
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -341,21 +336,12 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                         }
                         mRootFragment = ProfileFragment.newInstance(getContext());
                         break;
-                    case R.id.item_news:
+                    case R.id.item_write:
                         if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WriteFragment.class.getSimpleName())) {
                             popBackStack();
                             return true;
                         }
                         mRootFragment = WriteFragment.newInstance(getContext());
-                        break;
-                    case R.id.item_send:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(SendFragment.class.getSimpleName())) {
-                            popBackStack();
-                            return true;
-                        }
-
-                        mRootFragment = SendFragment.newInstance(false, null, null, null, getContext());
-
                         break;
                     default:
                         return false;
@@ -364,23 +350,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                 return true;
             }
         });
-
-        Intent intent = getIntent();
-        switch (intent.getAction()) {
-            case QtumIntent.SEND_FROM_SDK:
-                getPresenter().setSendFromIntent(true);
-                mAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_ADDRESS);
-                mAmountForSendAction = intent.getStringExtra(QtumIntent.SEND_AMOUNT);
-                mTokenAddressForSendAction = intent.getStringExtra(QtumIntent.SEND_TOKEN);
-                break;
-            case NfcAdapter.ACTION_NDEF_DISCOVERED:
-                getPresenter().setSendFromIntent(true);
-                mAddressForSendAction = "QbShaLBf1nAX3kznmGU7vM85HFRYJVG6ut";
-                mAmountForSendAction = "1.431";
-                break;
-            default:
-                break;
-        }
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() { //Update wallet balance change listener
             @Override
@@ -395,7 +364,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                             if (fr != null && fr.getClass() != null) {
                                 if (fr instanceof WalletFragment) {
                                     showBottomNavigationView(false);
-                                } else if (fr instanceof NewsFragment) {
+                                } else if (fr instanceof WriteFragment) {
                                     showBottomNavigationView(false);
                                 }
                             }
@@ -541,50 +510,27 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         return this;
     }
 
-    private int[] blackThemeIcons = {R.drawable.ic_wallet, R.drawable.ic_profile, R.drawable.ic_news, R.drawable.ic_send};
-    private int[] lightThemeIcons = {R.drawable.ic_wallet_light, R.drawable.ic_profile_light, R.drawable.ic_news_light, R.drawable.ic_send_light};
+    private int[] blackThemeIcons = {R.drawable.ic_write, R.drawable.ic_wallet, R.drawable.ic_profile};
 
     @Override
     protected void updateTheme() {
+        mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
+        mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_tab_background);
+        mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+        mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+        resetNavBarIconsWithTheme(blackThemeIcons);
+        recolorStatusBar(R.color.colorPrimary);
 
-        //setRootFragment(ProfileFragment.newInstance(this));
-        //openRootFragment(mRootFragment);
-
-        if (ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK)) {
-            mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
-            mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_tab_background);
-            mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
-            mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
-            resetNavBarIconsWithTheme(blackThemeIcons);
-            recolorStatusBar(R.color.colorPrimary);
-        } else {
-            int[][] states = new int[][] {
-                    new int[] {android.R.attr.state_checked},
-                    new int[] {-android.R.attr.state_checked}
-            };
-
-            int[] colors = new int[] {
-                    ContextCompat.getColor(getContext(),R.color.bottom_nav_bar_text_color_light),
-                    ContextCompat.getColor(getContext(),R.color.bottom_nav_bar_text_color_light_alpha_50)
-            };
-            ColorStateList myList = new ColorStateList(states, colors);
-
-            mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.bottom_nav_bar_color_light));
-            mBottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
-            mBottomNavigationView.setItemTextColor(myList);
-            mBottomNavigationView.setItemIconTintList(myList);
-            recolorStatusBar(R.color.title_color_light);
-            resetNavBarIconsWithTheme(lightThemeIcons);
-        }
-        initBottomNavViewWithFont((ThemeUtils.getCurrentTheme(this).equals(ThemeUtils.THEME_DARK) ? R.string.simplonMonoRegular : R.string.proximaNovaRegular));
+        initBottomNavViewWithFont(R.string.simplonMonoRegular);
     }
 
     public void resetNavBarIconsWithTheme(int[] icons) {
         Menu menu = mBottomNavigationView.getMenu();
-        menu.findItem(R.id.item_wallet).setIcon(icons[0]);
-        menu.findItem(R.id.item_profile).setIcon(icons[1]);
-        menu.findItem(R.id.item_news).setIcon(icons[2]);
-        menu.findItem(R.id.item_send).setIcon(icons[3]);
+        menu.findItem(R.id.item_write).setIcon(icons[0]);
+        menu.findItem(R.id.item_wallet).setIcon(icons[1]);
+        menu.findItem(R.id.item_profile).setIcon(icons[2]);
+
+        //menu.findItem(R.id.item_send).setIcon(icons[3]);
     }
 
     public void recolorStatusBar(int color) {

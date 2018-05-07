@@ -1,6 +1,5 @@
 package org.qtum.wallet.ui.fragment.write_fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -19,14 +18,8 @@ import android.widget.Toast;
 import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
-import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.news_detail_fragment.NewsDetailFragment;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsInteractorImpl;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsPresenter;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsPresenterImpl;
-import org.qtum.wallet.ui.fragment.news_fragment.NewsView;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import java.util.List;
@@ -38,7 +31,7 @@ import butterknife.OnClick;
 public abstract class WriteFragment extends BaseFragment implements WriteView {
     private WritePresenter mWriteFragmentPresenter;
     protected WriteAdapter mWriteAdapter;
-
+    protected LinearLayoutManager mLinearLayoutManager;
     @BindView(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh)
@@ -48,6 +41,11 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
 
     private NetworkStateReceiver mNetworkStateReceiver;
     private NetworkStateListener mNetworkStateListener;
+
+    protected boolean mLoadingFlag = false;
+    private int visibleItemCount;
+    private int totalItemCount;
+    private int pastVisibleItems;
 
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -75,7 +73,7 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
         getPresenter().write();
         mTextWrite.setText("");
     }
-    
+
     @Override
     protected void createPresenter() {
         mWriteFragmentPresenter = new WritePresenterImpl(this, new WriteInteractorImpl(getContext()));
@@ -101,10 +99,12 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
 
     @Override
     public void initializeViews() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager manager = ((LinearLayoutManager) recyclerView.getLayoutManager());
                 if (!mSwipeRefreshLayout.isRefreshing())
@@ -112,8 +112,20 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
                         mSwipeRefreshLayout.setEnabled(true);
                     else
                         mSwipeRefreshLayout.setEnabled(false);
+                if (dy > 0) {
+                    if (!mLoadingFlag) {
+                        visibleItemCount = mLinearLayoutManager.getChildCount();
+                        totalItemCount = mLinearLayoutManager.getItemCount();
+                        pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
+                            getPresenter().onLastItem(totalItemCount - 1);
+                            //Toast.makeText(getContext(),"last",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
             }
         });
+
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -121,6 +133,7 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
                 getPresenter().onRefresh();
             }
         });
+
     }
 
     @Override
@@ -147,20 +160,21 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(), getAdapterPosition());
-                    openFragment(newsDetailFragment);
+                    //Todo : Write 클릭시 세부 내용 보여주는 fragment 작성
+                    //BaseFragment newsDetailFragment = NewsDetailFragment.newInstance(getContext(), getAdapterPosition());
+                    //openFragment(newsDetailFragment);
                 }
             });
             ButterKnife.bind(this, itemView);
         }
 
         void bindWriteBlocks(WriteBlock writeBlock) {
-            mTextViewTitle.setText(writeBlock.getmBlockHash());
+            mTextViewTitle.setText(writeBlock.getTXHash());
             mTextViewDate.setText(writeBlock.getBlockTime());
             mTextViewDescription.setText(writeBlock.getWrite());
         }
     }
-    
+
     public class WriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<WriteBlock> mWriteBlcokList;
@@ -190,6 +204,10 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
         @Override
         public int getItemCount() {
             return mWriteBlcokList.size();
+        }
+
+        public void setLoadingFlag(boolean loadingFlag) {
+            mLoadingFlag = loadingFlag;
         }
     }
 
@@ -228,4 +246,29 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
             setAlertDialog(org.qtum.wallet.R.string.error, error, "Ok", BaseFragment.PopUpType.error);
         }
     };
+
+    @Override
+    public void loadNewWrite() {
+        mLoadingFlag = true;
+        //mWriteAdapter.setLoadingFlag(true);
+        mWriteAdapter.notifyItemChanged(totalItemCount - 1);
+    }
+
+    @Override
+    public void addHistory(int positionStart, int itemCount, List<WriteBlock> historyList) {
+        //mWriteAdapter.setHistoryList(historyList);
+        //mWriteAdapter.setLoadingFlag(false);
+        mLoadingFlag = false;
+        mWriteAdapter.notifyItemRangeChanged(positionStart, itemCount);
+    }
+
+    @Override
+    public void notifyConfirmHistory(final int notifyPosition) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWriteAdapter.notifyItemChanged(notifyPosition);
+            }
+        });
+    }
 }
