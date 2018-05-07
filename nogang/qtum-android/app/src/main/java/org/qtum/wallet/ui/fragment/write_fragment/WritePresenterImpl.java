@@ -2,6 +2,8 @@ package org.qtum.wallet.ui.fragment.write_fragment;
 
 import android.util.Log;
 
+import org.qtum.wallet.datastorage.HistoryList;
+import org.qtum.wallet.datastorage.WriteList;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
@@ -11,6 +13,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.utils.DateCalculator;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
 
 public class WritePresenterImpl extends BaseFragmentPresenterImpl implements WritePresenter {
@@ -26,6 +30,7 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
     private WriteInteractor mWriteFragmentInteractor;
     private boolean mNetworkConnectedFlag = false;
     private String mWriteText;
+    private SubscriptionList mSubscriptionList = new SubscriptionList();
 
     public WritePresenterImpl(WriteView writeFragmentView, WriteInteractor writeInteractor) {
         mWriteFragmentView = writeFragmentView;
@@ -131,8 +136,38 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
     }
 
     @Override
-    public void loadAndUpdateWrite() {
+    public void onLastItem(final int currentItemCount){
 
+        getView().loadNewWrite();
+        mSubscriptionList.add(getInteractor().getHistoryResponse("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ", 25, currentItemCount)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HistoryResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HistoryResponse historyResponse) {
+                        ArrayList<WriteBlock> writeBlocks = getWriteBlockList(historyResponse);
+                        WriteList.getInstance().addAll(writeBlocks);
+
+                        getView().addHistory(currentItemCount, WriteList.getInstance().getWriteList().size() - currentItemCount + 1,
+                                WriteList.getInstance().getWriteList());
+                        //initTransactionReceipt(historyResponse.getItems());
+
+                    }
+                }));
+
+
+    }
+    @Override
+    public void loadAndUpdateWrite() {
         getView().startRefreshAnimation();
         getInteractor().getHistoryResponse("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ",25, 0)
                 .subscribeOn(Schedulers.io())
@@ -149,35 +184,42 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
 
                     @Override
                     public void onNext(HistoryResponse historyResponse) {
+
+                        WriteList mWriteList = WriteList.getInstance();
                         ArrayList<WriteBlock> writeBlockList = new ArrayList<>();
 
                         Log.d("nogang", historyResponse.getItems().get(0).getTxHash());
-                        for (History history : historyResponse.getItems()) {
-                            for(Vout vout : history.getVout()){
-                                if (vout.getAddress().equals("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ")) {
-                                    String[] s = vout.getPubKey().split(" ");
-                                    Log.d("post", hexToUTF8(s[3]));
-                                    WriteBlock writeBlcok = new WriteBlock();
-                                    writeBlcok.setWrite(hexToUTF8(s[3]));
-                                    try{
-                                        writeBlcok.setBlockTime(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
-                                        writeBlcok.setmBlockHash(history.getBlockHash());
-                                    }catch(Exception e) {
-                                        writeBlcok.setBlockTime("unconfirmed");
-                                        writeBlcok.setmBlockHash("");
-                                    }
-                                    writeBlockList.add(writeBlcok);
-                                }
-                            }
-                        }
 
-                        //NewsStorage.newInstance().setNewses(oldNews);
-                        //getInteractor().setNewses(writeBlockList);
-                        getView().updateWriteBlocks(writeBlockList);
+                        writeBlockList = getWriteBlockList(historyResponse);
+                        mWriteList.setWriteList(writeBlockList);
+                        getView().updateWriteBlocks(mWriteList.getWriteList());
                     }
                 });
 
     }
 
+    private ArrayList<WriteBlock> getWriteBlockList(HistoryResponse historyResponse){
+        ArrayList<WriteBlock> writeBlockList = new ArrayList<>();
 
+        for (History history : historyResponse.getItems()) {
+            for(Vout vout : history.getVout()){
+                if (vout.getAddress().equals("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ")) {
+                    String[] s = vout.getPubKey().split(" ");
+                    Log.d("post", hexToUTF8(s[3]));
+                    WriteBlock writeBlcok = new WriteBlock();
+                    writeBlcok.setWrite(hexToUTF8(s[3]));
+                    try{
+                        writeBlcok.setBlockTime(DateCalculator.getShortDate(history.getBlockTime() * 1000L));
+                        writeBlcok.setTXHash(history.getTxHash());
+                    }catch(Exception e) {
+                        writeBlcok.setBlockTime("unconfirmed");
+                        writeBlcok.setTXHash("");
+                    }
+                    writeBlockList.add(writeBlcok);
+                }
+            }
+        }
+
+        return writeBlockList;
+    }
 }

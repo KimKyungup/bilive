@@ -10,4 +10,5 @@ public interface WritePresenter extends BaseFragmentPresenter {
 
     void write();
     void loadAndUpdateWrite();
+    void onLastItem(final int currentItemCount);
 }
