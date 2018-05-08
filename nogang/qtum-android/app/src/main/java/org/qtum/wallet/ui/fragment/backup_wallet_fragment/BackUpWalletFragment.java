@@ -21,7 +21,7 @@ import butterknife.OnClick;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-public abstract class BackUpWalletFragment extends BaseFragment implements BackUpWalletView {
+public class BackUpWalletFragment extends BaseFragment implements BackUpWalletView {
 
     private BackUpWalletPresenter mBackUpWalletFragmentPresenter;
 
@@ -64,6 +64,10 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
                 getActivity().onBackPressed();
                 break;
         }
+    }
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_back_up_wallet;
     }
 
     private void onBack() {
@@ -115,6 +119,7 @@ public abstract class BackUpWalletFragment extends BaseFragment implements BackU
             mButtonCopy.setVisibility(View.GONE);
             copyPassphare.setVisibility(View.VISIBLE);
         }
+        getMainActivity().recolorStatusBar(R.color.colorPrimary);
     }
 
     @Override

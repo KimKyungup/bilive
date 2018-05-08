@@ -16,7 +16,6 @@ import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -61,7 +60,6 @@ import org.qtum.wallet.utils.CustomContextWrapper;
 import org.qtum.wallet.utils.FontManager;
 
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
-import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.AppIntent;
 
 import java.lang.reflect.Field;

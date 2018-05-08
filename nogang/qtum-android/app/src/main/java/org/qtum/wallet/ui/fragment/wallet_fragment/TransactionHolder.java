@@ -20,7 +20,7 @@ import butterknife.OnLongClick;
 import rx.Subscriber;
 import rx.Subscription;
 
-public class TransactionHolderDark extends RecyclerView.ViewHolder {
+public class TransactionHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_value)
     TextView mTextViewValue;
@@ -49,7 +49,7 @@ public class TransactionHolderDark extends RecyclerView.ViewHolder {
     Subscription mSubscription;
     History mHistory;
 
-    public TransactionHolderDark(View itemView, final TransactionClickListener listener) {
+    public TransactionHolder(View itemView, final TransactionClickListener listener) {
         super(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

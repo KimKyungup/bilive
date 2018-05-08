@@ -10,21 +10,16 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
-import org.qtum.wallet.dataprovider.services.update_service.listeners.TokenListener;
-import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.other_tokens.OtherTokensFragment;
+
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 
 import butterknife.BindView;
 
-public abstract class WalletMainFragment extends BaseFragment implements WalletMainView {
+public class WalletMainFragment extends BaseFragment implements WalletMainView {
 
     private WalletFragment mWalletFragment;
-    private OtherTokensFragment mOtherTokensFragment;
-    private UpdateService mUpdateService;
 
     public static WalletMainFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -38,6 +33,11 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @BindView(org.qtum.wallet.R.id.view_pager)
     protected
     ViewPager pager;
+
+    @Override
+    protected int getLayout() {
+        return org.qtum.wallet.R.layout.fragment_wallet_main;
+    }
 
     @Override
     protected void createPresenter() {
@@ -65,36 +65,11 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @Override
     public void onResume() {
         super.onResume();
-        getMainActivity().subscribeServiceConnectionChangeEvent(new MainActivity.OnServiceConnectionChangeListener() {
-            @Override
-            public void onServiceConnectionChange(boolean isConnecting) {
-                if (isConnecting) {
-                    mUpdateService = getMainActivity().getUpdateService();
-                    mUpdateService.addTokenListener(new TokenListener() {
-                        @Override
-                        public void newToken() {
-                            getPresenter().checkOtherTokens();
-                        }
-                    });
-                }
-            }
-        });
-        getPresenter().checkOtherTokens();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mUpdateService != null) {
-            mUpdateService.removeTokenListener();
-        }
-    }
-
-    @Override
-    public void showOtherTokens(boolean isShow) {
-        if (pager.getAdapter() != null) {
-            ((FragmentAdapter) pager.getAdapter()).showOtherTokens(isShow);
-        }
     }
 
     public class FragmentAdapter extends FragmentStatePagerAdapter {
@@ -114,28 +89,13 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
             return (WalletFragment) registeredFragments.get(0);
         }
 
-        OtherTokensFragment getOtherTokensFragment() {
-            return (OtherTokensFragment) registeredFragments.get(1);
-        }
-
-        public void showOtherTokens(boolean show) {
-            NUM_ITEMS = (show) ? 2 : 1;
-            notifyDataSetChanged();
-            if (show) {
-                showPageIndicator();
-                getOtherTokensFragment().notifyTokenChange();
-            } else {
-                hidePageIndicator();
-            }
-        }
-        
         public FragmentAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
         @Override
         public Fragment getItem(int position) {
-            //Todo : viewPager main Activity 에 적용
+            //Todo : viewPager 구현
             switch (position) {
                 case 0:
                     mWalletFragment = (WalletFragment) WalletFragment.newInstance(getContext());
@@ -156,9 +116,6 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
         super.onDestroy();
         if (mWalletFragment != null) {
             mWalletFragment.dismiss();
-        }
-        if (mOtherTokensFragment != null) {
-            mOtherTokensFragment.dismiss();
         }
     }
 }

@@ -11,7 +11,7 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 
 import butterknife.OnClick;
 
-public abstract class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPreferenceView {
+public class TouchIDPreferenceFragment extends BaseFragment implements TouchIDPreferenceView {
 
     private static final String IS_IMPORTING = "is_importing";
     private static final String PIN = "pin";
@@ -47,6 +47,11 @@ public abstract class TouchIDPreferenceFragment extends BaseFragment implements 
     }
 
     private TouchIDPreferencePresenter mTouchIDPreferencePresenterImpl;
+
+    @Override
+    protected int getLayout() {
+        return org.qtum.wallet.R.layout.fragment_touch_id_preference;
+    }
 
     @Override
     public void initializeViews() {

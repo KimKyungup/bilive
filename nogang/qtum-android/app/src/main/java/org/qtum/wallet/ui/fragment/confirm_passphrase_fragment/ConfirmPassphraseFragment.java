@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.confirm_passphrase_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public abstract class ConfirmPassphraseFragment extends BaseFragment implements ConfirmPassphraseView{
+public class ConfirmPassphraseFragment extends BaseFragment implements ConfirmPassphraseView{
 
     private static final String SEED = "seed";
 
@@ -94,6 +95,22 @@ public abstract class ConfirmPassphraseFragment extends BaseFragment implements 
         fragment.setArguments(args);
         return fragment;
     }
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_confirm_passphrase;
+    }
+
+    @Override
+    public void showError() {
+        mEditTextError.setVisibility(View.VISIBLE);
+        mRelativeLayoutOutputContainer.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.background_output_seed_error));
+    }
+
+    @Override
+    public void hideError() {
+        mEditTextError.setVisibility(View.INVISIBLE);
+        mRelativeLayoutOutputContainer.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.background_et_import_wallet));
+    }
 
     @Override
     protected ConfirmPassphrasePresenter getPresenter() {
@@ -121,6 +138,13 @@ public abstract class ConfirmPassphraseFragment extends BaseFragment implements 
         inputSeed = new ArrayList<>(seed);
         Collections.shuffle(inputSeed);
         outputSeed = new ArrayList<>();
+
+        wordsAdapterInput = new WordsAdapter(inputSeed,inputSeedListener,R.layout.item_seed_chips_input);
+
+        wordsAdapterOutput = new WordsAdapter(outputSeed,outputSeedListener,R.layout.item_seed_chips_output);
+
+        mRecyclerViewInput.setAdapter(wordsAdapterInput);
+        mRecyclerViewOutput.setAdapter(wordsAdapterOutput);
     }
 
     @Override

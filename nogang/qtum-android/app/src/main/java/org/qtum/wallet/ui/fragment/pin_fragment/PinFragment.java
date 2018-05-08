@@ -24,7 +24,6 @@ import org.qtum.wallet.ui.fragment.backup_wallet_fragment.BackUpWalletFragment;
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.touch_id_preference_fragment.TouchIDPreferenceFragment;
-import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.ui.fragment.write_fragment.WriteFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
@@ -37,7 +36,7 @@ import javax.crypto.Cipher;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class PinFragment extends BaseFragment implements PinView {
+public class PinFragment extends BaseFragment implements PinView {
 
     private PinPresenter mPinFragmentPresenter;
 
@@ -64,6 +63,23 @@ public abstract class PinFragment extends BaseFragment implements PinView {
             case R.id.bt_cancel:
                 getPresenter().cancel();
                 break;
+        }
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_pin;
+    }
+
+    boolean isBottomNavigationViewVisible;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (isBottomNavigationViewVisible) {
+            ((MainActivity) getActivity()).showBottomNavigationView(true);
+        } else {
+            ((MainActivity) getActivity()).hideBottomNavigationView(R.color.background);
         }
     }
 
@@ -218,6 +234,8 @@ public abstract class PinFragment extends BaseFragment implements PinView {
                 getPresenter().confirm(str.toString());
             }
         });
+        isBottomNavigationViewVisible = ((MainActivity) getActivity()).isBottomNavigationViewVisible();
+        ((MainActivity) getActivity()).hideBottomNavigationView(R.color.background);
     }
 
     @Override

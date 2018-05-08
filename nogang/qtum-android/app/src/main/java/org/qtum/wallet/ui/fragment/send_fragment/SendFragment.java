@@ -44,12 +44,13 @@ import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
+
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment.qr_code_recognition_fragment.QrCodeRecognitionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.utils.ContractManagementHelper;
 import org.qtum.wallet.utils.FontButton;
+import org.qtum.wallet.utils.FontManager;
 import org.qtum.wallet.utils.FontTextView;
 import org.qtum.wallet.utils.ResizeHeightAnimation;
 
@@ -66,7 +67,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public abstract class SendFragment extends BaseFragment implements SendView {
+public class SendFragment extends BaseFragment implements SendView {
 
     private static final int REQUEST_CAMERA = 3;
     private boolean OPEN_QR_CODE_FRAGMENT_FLAG = false;
@@ -210,10 +211,27 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         }
     };
 
+
+    @Override
+    protected int getLayout() {
+        return org.qtum.wallet.R.layout.fragment_send;
+    }
+
+    @Override
+    public void setUpSpinner(TokenBalance tokenBalance, Integer decimalUnits) {
+        if(adapter!=null &&
+                ((AddressWithTokenBalanceSpinnerAdapter)mSpinner.getAdapter()).getTokenBalance().getContractAddress().equals(tokenBalance.getContractAddress())) {
+            adapter.setTokenBalance(tokenBalance);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter = new AddressWithTokenBalanceSpinnerAdapter(getContext(), tokenBalance, "", decimalUnits);
+            mSpinner.setAdapter(adapter);
+        }
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getMainActivity().setIconChecked(3);
+        getMainActivity().setIconChecked(0);
         String currency = getArguments().getString(CURRENCY, "");
         if (!currency.equals("")) {
             getPresenter().searchAndSetUpCurrency(currency);
@@ -321,8 +339,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     private void onCurrencyClick() {
-        BaseFragment currencyFragment = CurrencyFragment.newInstance(getView().getContext());
-        openFragmentForResult(currencyFragment);
+     //
     }
 
     private void openQrCodeFragment() {
@@ -522,7 +539,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         };
         mCurrency = new Currency("Qtum " + getContext().getString(R.string.default_currency));
         showBottomNavView(true);
-        ((MainActivity) getActivity()).setIconChecked(3);
+        ((MainActivity) getActivity()).setIconChecked(0);
         mImageButtonBack.setVisibility(View.GONE);
         mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -669,6 +686,12 @@ public abstract class SendFragment extends BaseFragment implements SendView {
                 });
             }
         });
+        mTextInputEditTextAddress.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
+        mTextInputEditTextAmount.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
+        mTextInputEditTextFee.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
+        tilAdress.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
+        tilAmount.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
+        tilFee.setTypeface(FontManager.getInstance().getFont(getString(org.qtum.wallet.R.string.simplonMonoRegular)));
     }
 
     private String validateFloatDot(CharSequence input) {

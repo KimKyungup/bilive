@@ -2,6 +2,7 @@ package org.qtum.wallet.ui.fragment.start_page_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,7 +23,7 @@ import butterknife.OnClick;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CREATING;
 
-public abstract class StartPageFragment extends BaseFragment implements StartPageView {
+public class StartPageFragment extends BaseFragment implements StartPageView {
 
     private StartPagePresenter mStartPageFragmentPresenter;
 
@@ -54,6 +55,14 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
         BaseFragment fragment = Factory.instantiateFragment(context, StartPageFragment.class);
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Override
+    public void hideLoginButton() {
+        mButtonLogin.setVisibility(View.GONE);
+        mButtonCreateNew.setBackgroundColor(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.accent_red_color));
+        mButtonCreateNew.setTextColor(ContextCompat.getColor(getContext(), org.qtum.wallet.R.color.background));
     }
 
     @OnClick({R.id.bt_import_wallet, R.id.bt_create_new, R.id.bt_login})
@@ -93,7 +102,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_start_page;
+        return org.qtum.wallet.R.layout.fragment_start_page;
     }
 
     @Override
@@ -102,6 +111,7 @@ public abstract class StartPageFragment extends BaseFragment implements StartPag
             BaseFragment fragment = PinFragment.newInstance(AUTHENTICATION, getContext());
             openFragment(fragment);
         }
+        hideBottomNavView(org.qtum.wallet.R.color.background);
     }
 
     private void clearWallet() {
