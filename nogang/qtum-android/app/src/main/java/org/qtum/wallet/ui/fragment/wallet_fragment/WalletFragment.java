@@ -33,9 +33,9 @@ import org.qtum.wallet.dataprovider.services.update_service.listeners.Transactio
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.fragment.qtum_cash_management_fragment.AddressListFragment;
-import org.qtum.wallet.ui.fragment.receive_fragment.ReceiveFragment;
+
 import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
-import org.qtum.wallet.ui.fragment.transaction_fragment.TransactionFragment;
+
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.utils.ClipboardUtils;
@@ -190,8 +190,8 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @OnClick({R.id.ll_receive, R.id.iv_receive})
     public void onReceiveClick() {
-        BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), null, null);
-        openFragmentForResult(receiveFragment);
+        //BaseFragment receiveFragment = ReceiveFragment.newInstance(getContext(), null, null);
+        //openFragmentForResult(receiveFragment);
     }
 
     @OnClick(R.id.iv_choose_address)
@@ -380,7 +380,8 @@ public abstract class WalletFragment extends BaseFragment implements WalletView,
 
     @Override
     public void openTransactionsFragment(int position) {
-        Fragment fragment = TransactionFragment.newInstance(getContext(), position);
-        openFragment(fragment);
+        //TODO : transaction 기록을 눌렀을 때 표시되어야 하는 fragment 호출
+        //Fragment fragment = TransactionFragment.newInstance(getContext(), position);
+        //openFragment(fragment);
     }
 }

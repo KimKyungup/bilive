@@ -10,14 +10,4 @@ public class WalletMainFragmentDark extends WalletMainFragment {
     protected int getLayout() {
         return org.qtum.wallet.R.layout.fragment_wallet_main;
     }
-
-    @Override
-    public void showPageIndicator() {
-        ((WalletFragmentDark) ((FragmentAdapter) pager.getAdapter()).getWalletFragment()).pagerIndicator.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hidePageIndicator() {
-        ((WalletFragmentDark) ((FragmentAdapter) pager.getAdapter()).getWalletFragment()).pagerIndicator.setVisibility(View.INVISIBLE);
-    }
 }

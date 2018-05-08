@@ -24,28 +24,6 @@ public class WalletMainPresenterImpl extends BaseFragmentPresenterImpl implement
         return mWalletMainView;
     }
 
-    @Override
-    public void checkOtherTokens() {
-        getInteractor().getTokensObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Token>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(List<Token> tokens) {
-                        getView().showOtherTokens(tokens != null && tokens.size() > 0);
-                    }
-                });
-    }
-
     private WalletMainInteractor getInteractor() {
         return mWalletMainFragmentInteractor;
     }

@@ -57,6 +57,7 @@ import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.ui.fragment.write_fragment.WriteFragment;
+import org.qtum.wallet.ui.fragment.write_fragment.WriteFragmentDark;
 import org.qtum.wallet.utils.CustomContextWrapper;
 import org.qtum.wallet.utils.FontManager;
 
@@ -341,7 +342,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                             popBackStack();
                             return true;
                         }
-                        mRootFragment = WriteFragment.newInstance(getContext());
+                        mRootFragment = WriteFragmentDark.newInstance(getContext());
                         break;
                     default:
                         return false;

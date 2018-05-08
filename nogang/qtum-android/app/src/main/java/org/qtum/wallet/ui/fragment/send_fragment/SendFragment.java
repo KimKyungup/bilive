@@ -44,7 +44,7 @@ import org.qtum.wallet.model.gson.token_balance.Balance;
 import org.qtum.wallet.model.gson.token_balance.TokenBalance;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.currency_fragment.CurrencyFragment;
+
 import org.qtum.wallet.ui.fragment.pin_fragment.PinDialogFragment;
 import org.qtum.wallet.ui.fragment.qr_code_recognition_fragment.QrCodeRecognitionFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -213,7 +213,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getMainActivity().setIconChecked(3);
+        getMainActivity().setIconChecked(0);
         String currency = getArguments().getString(CURRENCY, "");
         if (!currency.equals("")) {
             getPresenter().searchAndSetUpCurrency(currency);
@@ -321,8 +321,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
     }
 
     private void onCurrencyClick() {
-        BaseFragment currencyFragment = CurrencyFragment.newInstance(getView().getContext());
-        openFragmentForResult(currencyFragment);
+     //
     }
 
     private void openQrCodeFragment() {
@@ -522,7 +521,7 @@ public abstract class SendFragment extends BaseFragment implements SendView {
         };
         mCurrency = new Currency("Qtum " + getContext().getString(R.string.default_currency));
         showBottomNavView(true);
-        ((MainActivity) getActivity()).setIconChecked(3);
+        ((MainActivity) getActivity()).setIconChecked(0);
         mImageButtonBack.setVisibility(View.GONE);
         mRelativeLayoutBase.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
