@@ -17,7 +17,7 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 
 import butterknife.BindView;
 
-public abstract class WalletMainFragment extends BaseFragment implements WalletMainView {
+public class WalletMainFragment extends BaseFragment implements WalletMainView {
 
     private WalletFragment mWalletFragment;
 
@@ -33,6 +33,11 @@ public abstract class WalletMainFragment extends BaseFragment implements WalletM
     @BindView(org.qtum.wallet.R.id.view_pager)
     protected
     ViewPager pager;
+
+    @Override
+    protected int getLayout() {
+        return org.qtum.wallet.R.layout.fragment_wallet_main;
+    }
 
     @Override
     protected void createPresenter() {

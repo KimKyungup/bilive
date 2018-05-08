@@ -16,7 +16,6 @@ import android.content.res.ColorStateList;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -57,12 +56,10 @@ import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
 import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.ui.fragment.write_fragment.WriteFragment;
-import org.qtum.wallet.ui.fragment.write_fragment.WriteFragmentDark;
 import org.qtum.wallet.utils.CustomContextWrapper;
 import org.qtum.wallet.utils.FontManager;
 
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
-import org.qtum.wallet.ui.fragment.send_fragment.SendFragment;
 import org.qtum.wallet.utils.AppIntent;
 
 import java.lang.reflect.Field;
@@ -342,7 +339,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
                             popBackStack();
                             return true;
                         }
-                        mRootFragment = WriteFragmentDark.newInstance(getContext());
+                        mRootFragment = WriteFragment.newInstance(getContext());
                         break;
                     default:
                         return false;

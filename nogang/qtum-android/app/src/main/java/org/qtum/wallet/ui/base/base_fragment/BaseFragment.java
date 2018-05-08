@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import org.qtum.wallet.ui.fragment.processing_dialog.ProcessingDialogFragmentDark;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 import org.qtum.wallet.ui.fragment.processing_dialog.ProcessingDialogFragment;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
@@ -61,7 +60,7 @@ public abstract class BaseFragment extends Fragment implements BaseFragmentView 
     @Override
     public void setProgressDialog() {
         hideKeyBoard();
-        mProcessingDialog = new ProcessingDialogFragmentDark();
+        mProcessingDialog = new ProcessingDialogFragment();
         mProcessingDialog.show(getFragmentManager(), mProcessingDialog.getClass().getCanonicalName());
     }
 

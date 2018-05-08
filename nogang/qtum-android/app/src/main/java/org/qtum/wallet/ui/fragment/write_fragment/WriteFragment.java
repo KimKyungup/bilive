@@ -19,6 +19,7 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
 import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
 import org.qtum.wallet.model.writeblock.WriteBlock;
+import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
@@ -28,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public abstract class WriteFragment extends BaseFragment implements WriteView {
+public class WriteFragment extends BaseFragment implements WriteView {
     private WritePresenter mWriteFragmentPresenter;
     protected WriteAdapter mWriteAdapter;
     protected LinearLayoutManager mLinearLayoutManager;
@@ -52,6 +53,18 @@ public abstract class WriteFragment extends BaseFragment implements WriteView {
         BaseFragment fragment = Factory.instantiateFragment(context, WriteFragment.class);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_write;
+    }
+
+    @Override
+    public void updateWriteBlocks(List<WriteBlock> writeBlocks) {
+        mWriteAdapter = new WriteAdapter(writeBlocks, R.layout.item_write);
+        mRecyclerView.setAdapter(mWriteAdapter);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public String getWriteText(){

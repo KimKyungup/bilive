@@ -17,7 +17,7 @@ import org.qtum.wallet.utils.FontTextView;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public abstract class AddressWithTokenBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
+public class AddressWithTokenBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     private Context mContext;
     private TokenBalance mTokenBalance;
@@ -31,6 +31,15 @@ public abstract class AddressWithTokenBalanceSpinnerAdapter extends BaseAdapter 
         this.decimalUnits = decimalUnits;
     }
 
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        return getCustomView(i, R.layout.item_address_spinner_send, viewGroup);
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return getCustomViewDropDown(position, R.layout.item_address_spinner_dropdown_send, parent);
+    }
     @Override
     public int getCount() {
         return mTokenBalance.getBalances().size();

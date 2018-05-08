@@ -17,7 +17,7 @@ import org.qtum.wallet.utils.FontTextView;
 import java.math.BigDecimal;
 import java.util.List;
 
-public abstract class AddressesWithBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
+public class AddressesWithBalanceSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     private Context mContext;
     private List<AddressWithBalance> mKeyWithBalanceList;
@@ -25,6 +25,18 @@ public abstract class AddressesWithBalanceSpinnerAdapter extends BaseAdapter imp
     public AddressesWithBalanceSpinnerAdapter(@NonNull Context context, List<AddressWithBalance> keyWithBalanceList) {
         mContext = context;
         mKeyWithBalanceList = keyWithBalanceList;
+    }
+
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        return getCustomView(position, org.qtum.wallet.R.layout.item_address_spinner, parent);
+    }
+
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        return getCustomView(position, org.qtum.wallet.R.layout.item_address_spinner_dropdown, parent);
     }
 
     @Override

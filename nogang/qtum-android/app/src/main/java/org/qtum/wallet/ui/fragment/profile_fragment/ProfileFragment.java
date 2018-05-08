@@ -23,7 +23,7 @@ import butterknife.BindView;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.AUTHENTICATION_FOR_PASSPHRASE;
 import static org.qtum.wallet.ui.fragment.pin_fragment.PinAction.CHANGING;
 
-public abstract class ProfileFragment extends BaseFragment implements ProfileView, OnSettingClickListener {
+public class ProfileFragment extends BaseFragment implements ProfileView, OnSettingClickListener {
 
     protected PrefAdapter adapter;
 
@@ -48,6 +48,11 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
         BaseFragment fragment = Factory.instantiateFragment(context, ProfileFragment.class);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.lyt_profile_preference;
     }
 
     @Override
@@ -102,6 +107,11 @@ public abstract class ProfileFragment extends BaseFragment implements ProfileVie
     public void initializeViews() {
         super.initializeViews();
         prefList.setLayoutManager(new LinearLayoutManager(getContext()));
+        dividerItemDecoration = new DividerItemDecoration(getContext(), R.drawable.color_primary_divider, R.drawable.section_setting_divider, getPresenter().getSettingsData());
+        showBottomNavView(R.color.colorPrimary);
+        adapter = new PrefAdapter(getPresenter().getSettingsData(), this, R.layout.lyt_profile_pref_list_item);
+        prefList.addItemDecoration(dividerItemDecoration);
+        prefList.setAdapter(adapter);
     }
 
     @Override
