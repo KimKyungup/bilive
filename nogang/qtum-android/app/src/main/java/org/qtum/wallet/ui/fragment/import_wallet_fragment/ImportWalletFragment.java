@@ -17,7 +17,7 @@ import org.qtum.wallet.utils.FontEditText;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public abstract class ImportWalletFragment extends BaseFragment implements ImportWalletView {
+public class ImportWalletFragment extends BaseFragment implements ImportWalletView {
 
     private final int LAYOUT = org.qtum.wallet.R.layout.fragment_import_wallet;
     private ImportWalletPresenter mImportWalletFragmentPresenter;
