@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bottom_menu_background">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:id="@+id/frameLayoutBottomBarWrite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textViewBottomBarWrite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="34dp"
+                android:text="@string/bottom_bar_write"
+                android:textColor="@color/text_color_normal"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/imageViewBottomBarWrite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="11dp"
+                app:srcCompat="@drawable/btbar_write_selected" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayoutBottomBarMyWallet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textViewBottomBarMyWallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="34dp"
+                android:text="@string/bottom_bar_my_wallet"
+                android:textColor="@color/text_color_disabled"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/imageViewBottomBarMyWallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="11dp"
+                app:srcCompat="@drawable/btbar_wallet" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayoutBottomBarSetting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textViewBottomBarSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="34dp"
+                android:text="@string/bottom_bar_setting"
+                android:textColor="@color/text_color_disabled"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/imageViewBottomBarSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="11dp"
+                app:srcCompat="@drawable/btbar_setting" />
+        </FrameLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

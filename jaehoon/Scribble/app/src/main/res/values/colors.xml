@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#6c63ff</color>
+    <color name="colorPrimaryDark">#191b2b</color>
+    <color name="colorAccent">#cfcfcf</color>
+
+    // General
+    <color name="background">#191b2b</color>
+    <color name="text_color_normal">#ffffff</color>
+    <color name="text_color_disabled">#5e5f6b</color>
+
+    // Main Activity
+    <color name="top_menu_btc_underline">#f5a623</color>
+    <color name="top_menu_eth_underline">#00e3ad</color>
+    <color name="top_menu_qtum_underline">#4a90e2</color>
+
+    <color name="bottom_menu_background">#2e2e48</color>
+
+    <color name="write_editor_background">#6c63ff</color>
+    <color name="write_editor_cursor">#cfcfcf</color>
+
+</resources>

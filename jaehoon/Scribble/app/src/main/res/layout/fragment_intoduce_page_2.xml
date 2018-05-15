@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".IntroduceActivity$PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/textViewIntroduceTitle_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginStart="36dp"
+        android:singleLine="false"
+        android:text="@string/introduce_title_2"
+        android:textAlignment="center"
+        android:textColor="@color/text_color_normal"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewIntroduceDescription_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewIntroduceDescription_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="164dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginStart="36dp"
+        android:singleLine="false"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor."
+        android:textAlignment="center"
+        android:textColor="@color/text_color_normal"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/introduce_description_2" />
+
+    <LinearLayout
+        android:layout_width="111dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="227dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/sample_dot"
+            tools:layout_editor_absoluteX="206dp"
+            tools:layout_editor_absoluteY="227dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="51dp"
+            android:src="@drawable/sample_dot"
+            tools:layout_editor_absoluteY="227dp" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

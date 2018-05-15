@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Scribble</string>
+
+    // Input Password Activity
+    <string name="password">암호</string>
+    <string name="password_retry_guide_description">한번 더 입력해 주세요.</string>
+    <string name="password_setting_guide_description">비밀번호를 설정해주세요.</string>
+    <string name="password_wrong_guide_description">암호가 일치하지 않습니다.\n처음부터 입력해 주세요.</string>
+
+    // Input Fingerprint Activity
+    <string name="fingerprint">지문</string>
+    <string name="fingerprint_register_guide_description">휴대폰에 등록된 지문이 있습니다.\n지문 잠금 해제를 사용하시겠습니까?</string>
+    <string name="fingerprint_register_later">다음에 하기</string>
+    <string name="fingerprint_register_allow">지문 잠금 해제 사용</string>
+
+    // Introduce Activity
+    <string name="introduce_title_1">기능 설명 1</string>
+    <string name="introduce_title_2">기능 설명 2</string>
+    <string name="introduce_title_3">기능 설명 3</string>
+    <string name="introduce_description_1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor.</string>
+    <string name="introduce_description_2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor.</string>
+    <string name="introduce_description_3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor.</string>
+    <string name="introduce_skip">건너뛰기</string>
+    <string name="introduce_next">다음</string>
+    <string name="introduce_start">시작하기</string>
+
+    // Main Activity
+    // Top bar
+    <string name="wallet_all_coin">전체</string>
+    <string name="wallet_btc_abbreviation">BTC</string>
+    <string name="wallet_btc_name">비트코인</string>
+    <string name="wallet_eth_abbreviation">ETH</string>
+    <string name="wallet_eth_name">이더리움</string>
+    <string name="wallet_qtum_abbreviation">QTUM</string>
+    <string name="wallet_qtum_name">퀀텀</string>
+
+    // Bottom bar
+    <string name="bottom_bar_write">기록하기</string>
+    <string name="bottom_bar_my_wallet">내 지갑</string>
+    <string name="bottom_bar_setting">설정</string>
+
+    // Wallet Function
+    <string name="wallet_send">보내기</string>
+    <string name="wallet_receive">받기</string>
+    <string name="wallet_qr_code_scan">코드 스캔</string>
+    <string name="wallet_recent_activity">최근 활동</string>
+
+    // Write Function
+    <string name="write_on_blockchain">블록체인에 글 새기기</string>
+    <string name="write_history">새겨진 기록</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+</resources>
