@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <TextView
+        android:id="@+id/textViewPostBody"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것 입니..."
+        android:textColor="@color/text_color_normal"
+        android:textSize="15sp"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
