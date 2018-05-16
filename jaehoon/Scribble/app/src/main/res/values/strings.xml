@@ -48,10 +48,7 @@
     // Write Function
     <string name="write_on_blockchain">블록체인에 글 새기기</string>
     <string name="write_history">새겨진 기록</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="write_all_posts">전체글</string>
+    <string name="write_my_posts">내 글</string>
 
 </resources>

@@ -20,4 +20,9 @@
     <color name="write_editor_background">#6c63ff</color>
     <color name="write_editor_cursor">#cfcfcf</color>
 
+    <color name="write_all_posts">#dcdcdc</color>
+    <color name="post_selector_background">#2e2e48</color>
+    <color name="post_selector_font_color">#dadfea</color>
+
+    <color name="post_list_divider_color">#2e2e48</color>
 </resources>

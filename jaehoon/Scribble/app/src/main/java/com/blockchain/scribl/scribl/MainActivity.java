@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     layoutMainWriteEditor.requestLayout();
 
                     imageViewPlus.setRotation((float) 45.0);
+                    textViewWriteOnBlockchain.setVisibility(View.INVISIBLE);
                 }
             });
 

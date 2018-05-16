@@ -15,4 +15,71 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewWriteHeader"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutMainWriteEditor"
+        app:srcCompat="@drawable/landing_header" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginStart="25dp"
+        android:text="@string/write_history"
+        android:textColor="@color/write_all_posts"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPostSelectorAllPost"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewPostSelectorAllPost" />
+
+    <TextView
+        android:id="@+id/textViewPostSelectorAllPost"
+        android:layout_width="66dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginTop="13dp"
+        android:background="@color/post_selector_background"
+        android:gravity="center"
+        android:text="@string/write_all_posts"
+        android:textColor="@color/post_selector_font_color"
+        android:textSize="10dp"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewWriteHeader"
+        app:layout_constraintTop_toTopOf="@+id/imageViewWriteHeader" />
+
+    <TextView
+        android:id="@+id/textViewPostSelectorMyPost"
+        android:layout_width="66dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="13dp"
+        android:gravity="center"
+        android:text="@string/write_my_posts"
+        android:textColor="@color/text_color_normal"
+        android:textSize="10sp"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewWriteHeader"
+        app:layout_constraintTop_toTopOf="@+id/imageViewWriteHeader" />
+
+    <ListView
+        android:id="@+id/listViewPost"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="7dp"
+        android:divider="@color/post_list_divider_color"
+        android:dividerHeight="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewWriteHeader" />
 </android.support.constraint.ConstraintLayout>
