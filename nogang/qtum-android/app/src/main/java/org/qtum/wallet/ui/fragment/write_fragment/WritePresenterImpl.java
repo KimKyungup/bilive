@@ -2,7 +2,6 @@ package org.qtum.wallet.ui.fragment.write_fragment;
 
 import android.util.Log;
 
-import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.WriteList;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.history.History;
@@ -13,7 +12,6 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 import org.qtum.wallet.utils.DateCalculator;
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -23,6 +21,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
+
+
 
 public class WritePresenterImpl extends BaseFragmentPresenterImpl implements WritePresenter {
 
@@ -39,7 +39,6 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
 
     public void write() {
         mWriteText = mWriteFragmentView.getWriteText();
-        //createTx(Hex.encode(mWriteText.getBytes()).toString(), "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", 2000000, 100000, "0.1");
         String s = mWriteText.toString();
 
         while(s.getBytes().length < 5){
@@ -47,13 +46,14 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
         }
 
         String text = hexToString(s);
-
-        //createTx(text, "494048b0fed64a1acfc390038aa2ad54d27ab1de", "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", 200000, 40, "0.1");
-        //createTx(text, "494048b0fed64a1acfc111111111111111111111", "qQajXaHWgZL9puf3z2h5KLsEapsCJvH91w", 200000, 40, "0.01");
-        createTx(text, "494048b0fed64a1acfc111111111111111111111", "", 200000, 40, "0.01");
-
-
+        if (false) {
+            qtumCreateTx(text, "494048b0fed64a1acfc111111111111111111111", "", 200000, 40, "0.01");
+        }
+        else {
+            EtherCreateTx(text, "0xAf44747484436cc65327794cD1B12f085bea618a", "", 200000, 40, "0.01");
+        }
     }
+
 
     public String hexToString(String s) {
         try {
@@ -117,14 +117,36 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
 
     }
 
-    private void createTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice, final String fee) {
+    private void EtherCreateTx(final String text, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice, final String fee) {
+        getInteractor().createEtherTransactionHash(text, contractAddress, gasLimit, gasPrice, fee)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().dismissProgressDialog();
+                        getView().setAlertDialog(org.qtum.wallet.R.string.error, e.toString(), "Ok", BaseFragment.PopUpType.error);
+                    }
+
+                    @Override
+                    public void onNext(String result) {
+                        Log.d("result", result);
+                    }
+                });
+    }
+
+    private void qtumCreateTx(final String abiParams, final String contractAddress, String senderAddress, final int gasLimit, final int gasPrice, final String fee) {
 
         getInteractor().getUnspentOutputs(senderAddress, new WriteInteractorImpl.GetUnspentListCallBack() {
             @Override
             public void onSuccess(List<UnspentOutput> unspentOutputs) {
-                String txHex = getInteractor().createTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice, fee);
+                String txHex = getInteractor().qtumCreateTransactionHash(abiParams, contractAddress, unspentOutputs, gasLimit, gasPrice, fee);
                 //getView().tost(txHex);
-                getInteractor().sendTx(txHex, getView().getSendTransactionCallback());
+                getInteractor().qtumSendTx(txHex, getView().getSendTransactionCallback());
             }
 
             @Override
