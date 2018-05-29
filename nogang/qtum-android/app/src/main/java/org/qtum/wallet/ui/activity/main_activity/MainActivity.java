@@ -57,11 +57,13 @@ import org.qtum.wallet.ui.fragment.wallet_fragment.WalletFragment;
 import org.qtum.wallet.ui.fragment.wallet_main_fragment.WalletMainFragment;
 import org.qtum.wallet.ui.fragment.write_fragment.WriteFragment;
 import org.qtum.wallet.utils.CustomContextWrapper;
+import org.qtum.wallet.utils.EtherWallet;
 import org.qtum.wallet.utils.FontManager;
 
 import org.qtum.wallet.ui.fragment.profile_fragment.ProfileFragment;
 import org.qtum.wallet.utils.AppIntent;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +111,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         }
         setContentView(LAYOUT);
         bindView();
-        //
+
         mNetworkReceiver = new NetworkStateReceiver(getNetworkConnectedFlag());
         registerReceiver(mNetworkReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));

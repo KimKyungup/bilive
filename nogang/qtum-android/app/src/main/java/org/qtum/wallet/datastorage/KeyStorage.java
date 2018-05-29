@@ -1,5 +1,8 @@
 package org.qtum.wallet.datastorage;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.google.common.collect.ImmutableList;
 
 import org.bitcoinj.crypto.ChildNumber;
@@ -11,7 +14,11 @@ import org.bitcoinj.wallet.UnreadableWalletException;
 import org.bitcoinj.wallet.Wallet;
 import org.qtum.wallet.utils.DictionaryWords;
 import org.qtum.wallet.utils.CurrentNetParams;
+import org.qtum.wallet.utils.EtherWallet;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +31,14 @@ public class KeyStorage implements Serializable {
     private static KeyStorage sKeyStorage;
     private List<DeterministicKey> mDeterministicKeyList;
     private List<String> mAddressesList;
-    private Wallet sWallet = null;
+    private Wallet sQtumWallet = null;
     private int sCurrentKeyPosition = 0;
     private final int ADDRESSES_COUNT = 10;
+    String walletAddress;
+
+    private Credentials credentials;
+
+    private String password = "bilive"; //Todo : 결정 필요함
 
     public static KeyStorage getInstance() {
         if (sKeyStorage == null) {
@@ -39,7 +51,7 @@ public class KeyStorage implements Serializable {
     }
 
     public void setWallet(Wallet wallet) {
-        this.sWallet = wallet;
+        this.sQtumWallet = wallet;
     }
 
     public void clearKeyStorage() {
@@ -59,8 +71,15 @@ public class KeyStorage implements Serializable {
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
+
+                try {
+                    credentials = WalletUtils.loadBip39Credentials(password,seedString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 if (seed != null) {
-                    sWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
+                    sQtumWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
                 }
                 getKeyList();
                 subscriber.onNext(seedString);
@@ -86,7 +105,7 @@ public class KeyStorage implements Serializable {
             pathParent.add(new ChildNumber(0, true));
             for (int i = 0; i < ADDRESSES_COUNT; i++) {
                 ImmutableList<ChildNumber> path = HDUtils.append(pathParent, new ChildNumber(i, true));
-                DeterministicKey k = sWallet.getActiveKeyChain().getKeyByPath(path, true);
+                DeterministicKey k = sQtumWallet.getActiveKeyChain().getKeyByPath(path, true);
                 mDeterministicKeyList.add(k);
                 mAddressesList.add(k.toAddress(CurrentNetParams.getNetParams()).toString());
             }
@@ -112,5 +131,9 @@ public class KeyStorage implements Serializable {
 
     public int getCurrentKeyPosition() {
         return sCurrentKeyPosition;
+    }
+
+    public Credentials getCredentials() {
+        return credentials;
     }
 }

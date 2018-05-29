@@ -14,13 +14,14 @@ import rx.Observable;
 
 public interface WriteInteractor {
 
-    Observable<RssFeed> getMediumRssFeed();
+
     Observable<HistoryResponse> getHistoryResponse(final String address, final int limit, final int offset);
      void unSubscribe();
 
-    void sendTx(String txHex, WriteInteractorImpl.SendTxCallBack callBack);
+    void qtumSendTx(String txHex, WriteInteractorImpl.SendTxCallBack callBack);
 
-    String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
+    String qtumCreateTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee);
+    Observable<String> createEtherTransactionHash(final String text, final String contractAddress, final int gasLimit, final int gasPrice, final String fee);
 
     BigDecimal getFeePerKb();
     void getUnspentOutputs(String address, final WriteInteractorImpl.GetUnspentListCallBack callBack);

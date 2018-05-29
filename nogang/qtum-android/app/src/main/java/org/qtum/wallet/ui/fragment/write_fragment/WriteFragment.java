@@ -22,7 +22,9 @@ import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
+import org.qtum.wallet.utils.EtherWallet;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,7 +49,7 @@ public class WriteFragment extends BaseFragment implements WriteView {
     private int visibleItemCount;
     private int totalItemCount;
     private int pastVisibleItems;
-
+    String walletAddress;
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
         BaseFragment fragment = Factory.instantiateFragment(context, WriteFragment.class);
@@ -82,9 +84,11 @@ public class WriteFragment extends BaseFragment implements WriteView {
             mTextInputEditTextFee.setText(new DecimalFormat("#.########").format(value));
         }
         */
+
         hideKeyBoard();
         getPresenter().write();
         mTextWrite.setText("");
+
     }
 
     @Override
