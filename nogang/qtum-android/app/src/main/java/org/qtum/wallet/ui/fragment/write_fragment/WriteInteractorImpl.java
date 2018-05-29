@@ -1,6 +1,7 @@
 package org.qtum.wallet.ui.fragment.write_fragment;
 
 import android.content.Context;
+import android.net.wifi.hotspot2.pps.Credential;
 
 import org.bitcoinj.script.Script;
 import org.qtum.wallet.dataprovider.rest_api.medium.MediumService;
@@ -17,9 +18,14 @@ import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
 
 import org.qtum.wallet.utils.ContractBuilder;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.Web3jFactory;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -30,6 +36,10 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
+
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.RawTransactionManager;
 
 public class WriteInteractorImpl implements WriteInteractor {
 
@@ -48,11 +58,6 @@ public class WriteInteractorImpl implements WriteInteractor {
     }
 
     @Override
-    public Observable<RssFeed> getMediumRssFeed() {
-        return MediumService.getInstance().getRssFeed(MEDIUM_QTUM_CHANEL);
-    }
-
-    @Override
     public Observable<HistoryResponse> getHistoryResponse(final String address, final int limit, final int offset) {
         return QtumService.newInstance().getHistoryResponse(address, limit, offset);
     }
@@ -63,7 +68,7 @@ public class WriteInteractorImpl implements WriteInteractor {
     }
 
     @Override
-    public void sendTx(String txHex, final WriteInteractorImpl.SendTxCallBack callBack) {
+    public void qtumSendTx(String txHex, final WriteInteractorImpl.SendTxCallBack callBack) {
         QtumService.newInstance().sendRawTransaction(new SendRawTransactionRequest(txHex, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,10 +94,45 @@ public class WriteInteractorImpl implements WriteInteractor {
         return new BigDecimal(qtumSettingSharedPreference.getFeePerKb(mContext));
     }
     @Override
-    public String createTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
+    public String qtumCreateTransactionHash(String abiParams, String contractAddress, List<UnspentOutput> unspentOutputs, int gasLimit, int gasPrice, String fee) {
         ContractBuilder contractBuilder = new ContractBuilder();
         Script script = contractBuilder.createMethodScript(abiParams, gasLimit, gasPrice, contractAddress);
         return contractBuilder.createTransactionHash(script, unspentOutputs, gasLimit, gasPrice, getFeePerKb(), fee, "",mContext);
+    }
+
+    public Observable<String> createEtherTransactionHash(final String text, final String contractAddress, final int gasLimit, final int gasPrice, final String fee) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                HttpService httpService = new HttpService("https://rinkeby.infura.io/gGHwulfhVK8ouWn8aZMz");
+                Web3j web3 = Web3jFactory.build(httpService);
+                Credentials credentials = KeyStorage.getInstance().getCredentials();
+                RawTransactionManager rawTxManager = new RawTransactionManager(web3, credentials);
+
+                //BigInteger bigGasPrice = new BigInteger("0");
+                //BigInteger bigGasLimit = new BigInteger("0");
+
+                try {
+
+                }catch (Exception e) {
+
+                }
+
+
+                String result = "";
+                try {
+                    BigInteger bigGasLimit = BigInteger.valueOf(90000);
+                    BigInteger bigGasPrice = web3.ethGasPrice().send().getGasPrice();
+                    EthSendTransaction ethSendTransaction = rawTxManager.sendTransaction(bigGasPrice, bigGasLimit, contractAddress, text, BigInteger.ZERO);
+                    result = ethSendTransaction.getTransactionHash();
+                }
+                catch (IOException e){
+
+                }
+
+                subscriber.onNext(result);
+            }
+        });
     }
 
     @Override

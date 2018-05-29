@@ -15,6 +15,8 @@ import org.bitcoinj.wallet.Wallet;
 import org.qtum.wallet.utils.DictionaryWords;
 import org.qtum.wallet.utils.CurrentNetParams;
 import org.qtum.wallet.utils.EtherWallet;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
 
 import java.io.File;
 import java.io.Serializable;
@@ -33,6 +35,10 @@ public class KeyStorage implements Serializable {
     private int sCurrentKeyPosition = 0;
     private final int ADDRESSES_COUNT = 10;
     String walletAddress;
+
+    private Credentials credentials;
+
+    private String password = "bilive"; //Todo : 결정 필요함
 
     public static KeyStorage getInstance() {
         if (sKeyStorage == null) {
@@ -65,15 +71,15 @@ public class KeyStorage implements Serializable {
                 } catch (UnreadableWalletException e) {
                     e.printStackTrace();
                 }
+
+                try {
+                    credentials = WalletUtils.loadBip39Credentials(password,seedString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 if (seed != null) {
                     sQtumWallet = Wallet.fromSeed(CurrentNetParams.getNetParams(), seed);
-                    try {
-                        File dir = new File("");
-                        walletAddress = EtherWallet.generateNewWalletFile("1234", dir, true);
-                    }
-                    catch(Exception e){
-                        Log.d("EtherWallet", e.toString());
-                    }
                 }
                 getKeyList();
                 subscriber.onNext(seedString);
@@ -127,5 +133,7 @@ public class KeyStorage implements Serializable {
         return sCurrentKeyPosition;
     }
 
-
+    public Credentials getCredentials() {
+        return credentials;
+    }
 }
