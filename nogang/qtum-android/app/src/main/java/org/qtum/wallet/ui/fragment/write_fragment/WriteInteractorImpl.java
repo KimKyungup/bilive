@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.wifi.hotspot2.pps.Credential;
 
 import org.bitcoinj.script.Script;
-import org.qtum.wallet.dataprovider.rest_api.medium.MediumService;
+import org.qtum.wallet.dataprovider.rest_api.ether.EthereumService;
 import org.qtum.wallet.dataprovider.rest_api.qtum.QtumService;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
@@ -14,6 +14,7 @@ import org.qtum.wallet.model.gson.SendRawTransactionResponse;
 import org.qtum.wallet.model.gson.UnspentOutput;
 
 import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history_ether.TxListResponse;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
 
@@ -45,7 +46,6 @@ public class WriteInteractorImpl implements WriteInteractor {
 
     private Context mContext;
     private SubscriptionList mSubscriptionList = new SubscriptionList();
-    private final String MEDIUM_QTUM_CHANEL = "@qtum";
 
     public interface SendTxCallBack {
         void onSuccess();
@@ -58,8 +58,13 @@ public class WriteInteractorImpl implements WriteInteractor {
     }
 
     @Override
-    public Observable<HistoryResponse> getHistoryResponse(final String address, final int limit, final int offset) {
+    public Observable<HistoryResponse> getHistoryResponseQtum(final String address, final int limit, final int offset) {
         return QtumService.newInstance().getHistoryResponse(address, limit, offset);
+    }
+
+    @Override
+    public Observable<TxListResponse> getHistoryResponseEther(final String address, final int page, final int size) {
+        return EthereumService.newInstance().getTransactionList(address, page, size);
     }
 
     @Override
@@ -111,13 +116,6 @@ public class WriteInteractorImpl implements WriteInteractor {
 
                 //BigInteger bigGasPrice = new BigInteger("0");
                 //BigInteger bigGasLimit = new BigInteger("0");
-
-                try {
-
-                }catch (Exception e) {
-
-                }
-
 
                 String result = "";
                 try {

@@ -3,6 +3,7 @@ package org.qtum.wallet.ui.fragment.write_fragment;
 import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
+import org.qtum.wallet.model.gson.history_ether.TxListResponse;
 import org.qtum.wallet.model.news.News;
 import org.qtum.wallet.model.news.RssFeed;
 import org.qtum.wallet.ui.fragment.send_fragment.SendInteractorImpl;
@@ -15,8 +16,9 @@ import rx.Observable;
 public interface WriteInteractor {
 
 
-    Observable<HistoryResponse> getHistoryResponse(final String address, final int limit, final int offset);
-     void unSubscribe();
+    Observable<HistoryResponse> getHistoryResponseQtum(final String address, final int limit, final int offset);
+    Observable<TxListResponse> getHistoryResponseEther(final String address, final int page, final int size);
+    void unSubscribe();
 
     void qtumSendTx(String txHex, WriteInteractorImpl.SendTxCallBack callBack);
 

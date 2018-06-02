@@ -7,6 +7,8 @@ import org.qtum.wallet.model.gson.UnspentOutput;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.model.gson.history.HistoryResponse;
 import org.qtum.wallet.model.gson.history.Vout;
+import org.qtum.wallet.model.gson.history_ether.Transaction;
+import org.qtum.wallet.model.gson.history_ether.TxListResponse;
 import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
@@ -135,6 +138,9 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
                     @Override
                     public void onNext(String result) {
                         Log.d("result", result);
+                        if (!result.equals("")) {
+                            getView().getSendTransactionCallback().onSuccess();
+                        }
                     }
                 });
     }
@@ -159,9 +165,43 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
 
     @Override
     public void onLastItem(final int currentItemCount){
-
         getView().loadNewWrite();
-        mSubscriptionList.add(getInteractor().getHistoryResponse("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ", 25, currentItemCount)
+        if (false){
+            mSubscriptionList.add(getQtumHistoryResponse(currentItemCount));
+        } else {
+            mSubscriptionList.add(getEtherHistoryResponse(currentItemCount));
+        }
+    }
+
+    private Subscription getEtherHistoryResponse(final int currentItemCount){
+        return getInteractor().getHistoryResponseEther("0xAf44747484436cc65327794cD1B12f085bea618a", 2, currentItemCount)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<TxListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(TxListResponse historyResponse) {
+                        ArrayList<WriteBlock> writeBlocks = getWriteBlockList(historyResponse);
+                        WriteList.getInstance().addAll(writeBlocks);
+
+                        getView().addHistory(currentItemCount, WriteList.getInstance().getWriteList().size() - currentItemCount + 1,
+                                WriteList.getInstance().getWriteList());
+                        //initTransactionReceipt(historyResponse.getItems());
+
+                    }
+                });
+    }
+
+    private Subscription getQtumHistoryResponse(final int currentItemCount){
+        return getInteractor().getHistoryResponseQtum("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ", 25, currentItemCount)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<HistoryResponse>() {
@@ -184,14 +224,21 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
                         //initTransactionReceipt(historyResponse.getItems());
 
                     }
-                }));
-
-
+                });
     }
     @Override
     public void loadAndUpdateWrite() {
         getView().startRefreshAnimation();
-        getInteractor().getHistoryResponse("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ",25, 0)
+
+        if(false) {
+            loadAndWriteQtuem();
+        } else {
+            loadAndWriteEther();
+        }
+    }
+
+    private void loadAndWriteQtuem() {
+        getInteractor().getHistoryResponseQtum("qQEhVZZFoW8Ao5K1sRf8Z81yvVsx5vVJvQ",25, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<HistoryResponse>() {
@@ -217,9 +264,37 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
                         getView().updateWriteBlocks(mWriteList.getWriteList());
                     }
                 });
-
     }
 
+    private void loadAndWriteEther() {
+        getInteractor().getHistoryResponseEther("0xAf44747484436cc65327794cD1B12f085bea618a",1, 10)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<TxListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(TxListResponse historyResponse) {
+
+                        WriteList mWriteList = WriteList.getInstance();
+                        ArrayList<WriteBlock> writeBlockList = new ArrayList<>();
+
+                        Log.d("ehter log", historyResponse.getTxList().get(0).getHash());
+                        //Log.d("nogang", historyResponse.getItems().get(0).getTxHash());
+
+                        writeBlockList = getWriteBlockList(historyResponse);
+                        mWriteList.setWriteList(writeBlockList);
+                        getView().updateWriteBlocks(mWriteList.getWriteList());
+                    }
+                });
+    }
     private ArrayList<WriteBlock> getWriteBlockList(HistoryResponse historyResponse){
         ArrayList<WriteBlock> writeBlockList = new ArrayList<>();
 
@@ -240,6 +315,34 @@ public class WritePresenterImpl extends BaseFragmentPresenterImpl implements Wri
                     writeBlockList.add(writeBlcok);
                 }
             }
+        }
+
+        return writeBlockList;
+    }
+
+    private ArrayList<WriteBlock> getWriteBlockList(TxListResponse  historyResponse){
+        ArrayList<WriteBlock> writeBlockList = new ArrayList<>();
+
+        for (Transaction history : historyResponse.getTxList()) {
+
+            if (history.getTo().equals("0xaf44747484436cc65327794cd1b12f085bea618a")) {
+                String s = history.getInput();
+                if(s.equals("0x")) continue;
+
+                s = s.substring(2);
+                Log.d("post", hexToUTF8(s));
+                WriteBlock writeBlcok = new WriteBlock();
+                writeBlcok.setWrite(hexToUTF8(s));
+                try{
+                    writeBlcok.setBlockTime(DateCalculator.getShortDate(history.getTimeStamp() * 1000L));
+                    writeBlcok.setTXHash(history.getHash());
+                }catch(Exception e) {
+                    writeBlcok.setBlockTime("unconfirmed");
+                    writeBlcok.setTXHash("");
+                }
+                writeBlockList.add(writeBlcok);
+            }
+
         }
 
         return writeBlockList;
