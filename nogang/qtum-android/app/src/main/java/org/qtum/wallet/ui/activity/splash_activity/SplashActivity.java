@@ -111,5 +111,6 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setAction(AppIntent.USER_START_APP);
         startActivity(intent);
+        overridePendingTransition(0, 0);    // Activity Transition Animation 제거
     }
 }

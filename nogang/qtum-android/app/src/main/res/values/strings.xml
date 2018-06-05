@@ -248,6 +248,7 @@
     <!--Added cjh8948 -->
     // Input Password Activity
     <string name="password">암호</string>
+    <string name="password_input_guide_description">비밀번호를 입력해주세요.</string>
     <string name="password_retry_guide_description">한번 더 입력해 주세요.</string>
     <string name="password_setting_guide_description">비밀번호를 설정해주세요.</string>
     <string name="password_wrong_guide_description">암호가 일치하지 않습니다.\n처음부터 입력해 주세요.</string>

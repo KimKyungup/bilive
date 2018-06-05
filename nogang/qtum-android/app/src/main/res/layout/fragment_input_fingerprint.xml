@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/textViewFingerprintDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="@string/fingerprint_register_guide_description"
+        android:textAlignment="center"
+        android:textColor="@color/text_color_normal"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFingerprintTitle" />
+
+    <TextView
+        android:id="@+id/textViewFingerprintTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="135dp"
+        android:text="@string/fingerprint"
+        android:textColor="@color/text_color_normal"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewFingerprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFingerprintDescription"
+        app:srcCompat="@drawable/fingerprint" />
+
+    <Button
+        android:id="@+id/buttonRegisterLater"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:background="#02191b2b"
+        android:text="@string/fingerprint_register_later"
+        android:textColor="@color/text_color_normal"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRegisterAllow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonRegisterAllow"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:background="#6c63ff"
+        android:text="@string/fingerprint_register_allow"
+        android:textColor="@color/text_color_normal"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

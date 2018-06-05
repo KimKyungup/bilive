@@ -1,0 +1,6 @@
+package org.qtum.wallet.ui.fragment.fragment_main;
+
+import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
+
+public interface MainPresenter extends BaseFragmentPresenter {
+}

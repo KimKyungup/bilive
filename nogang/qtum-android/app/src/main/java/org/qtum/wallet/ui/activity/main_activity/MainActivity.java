@@ -50,6 +50,9 @@ import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 
+import org.qtum.wallet.ui.fragment.fragment_input_fingerprint.InputFingerprintFragment;
+import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordFragment;
+import org.qtum.wallet.ui.fragment.fragment_introduce.IntroduceFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
@@ -87,8 +90,8 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     private List<MainActivity.OnServiceConnectionChangeListener> mServiceConnectionChangeListeners = new ArrayList<>();
     private ServiceConnection mServiceConnection;
 
-    @BindView(R.id.bottom_navigation_view)
-    BottomNavigationView mBottomNavigationView;
+//    @BindView(R.id.bottom_navigation_view)
+//    BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void createPresenter() {
@@ -222,16 +225,16 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void setIconChecked(int position) {
-        mBottomNavigationView.getMenu().getItem(position).setChecked(true);
+        //mBottomNavigationView.getMenu().getItem(position).setChecked(true);
     }
 
     @Override
     public void resetMenuText() {
         int[] menuResources = new int[]{R.string.write, R.string.wallet, R.string.setting, R.string.send};
-        Menu menu = mBottomNavigationView.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            menu.getItem(i).setTitle(getResources().getString(menuResources[i]));
-        }
+//        Menu menu = mBottomNavigationView.getMenu();
+//        for (int i = 0; i < menu.size(); i++) {
+//            menu.getItem(i).setTitle(getResources().getString(menuResources[i]));
+//        }
     }
 
     @Override
@@ -264,40 +267,41 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void showBottomNavigationView(boolean recolorStatusBar) {
-        if (mBottomNavigationView != null)
-            mBottomNavigationView.setVisibility(View.VISIBLE);
-        if (recolorStatusBar) {
-            recolorStatusBarBlue();
-        }
+//        if (mBottomNavigationView != null)
+//            mBottomNavigationView.setVisibility(View.VISIBLE);
+//        if (recolorStatusBar) {
+//            recolorStatusBarBlue();
+//        }
     }
 
     public void hideBottomNavigationView(boolean recolorStatusBar) {
-        if (mBottomNavigationView != null)
-            mBottomNavigationView.setVisibility(View.GONE);
-        if (recolorStatusBar) {
-            recolorStatusBarBlack();
-        }
+//        if (mBottomNavigationView != null)
+//            mBottomNavigationView.setVisibility(View.GONE);
+//        if (recolorStatusBar) {
+//            recolorStatusBarBlack();
+//        }
     }
 
-    public void recolorStatusBarBlack() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
-        }
-    }
-
-    public void recolorStatusBarBlue() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        }
-    }
+//    public void recolorStatusBarBlack() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.background));
+//        }
+//    }
+//
+//    public void recolorStatusBarBlue() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+//        }
+//    }
 
     public boolean isBottomNavigationViewVisible() {
-        return mBottomNavigationView.getVisibility() == View.VISIBLE;
+        return false;
+        //return mBottomNavigationView.getVisibility() == View.VISIBLE;
     }
 
     public void showBottomNavigationView(int resColorId) {
-        if (mBottomNavigationView != null)
-            mBottomNavigationView.setVisibility(View.VISIBLE);
+//        if (mBottomNavigationView != null)
+//            mBottomNavigationView.setVisibility(View.VISIBLE);
         if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
@@ -306,8 +310,8 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     public void hideBottomNavigationView(int resColorId) {
-        if (mBottomNavigationView != null)
-            mBottomNavigationView.setVisibility(View.GONE);
+//        if (mBottomNavigationView != null)
+//            mBottomNavigationView.setVisibility(View.GONE);
         if (resColorId > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), resColorId));
@@ -318,38 +322,38 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     @Override
     public void initializeViews() {
         updateTheme();
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_wallet:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WalletMainFragment.class.getSimpleName())) {
-                            popBackStack();
-                            return true;
-                        }
-                        mRootFragment = WalletMainFragment.newInstance(getContext());
-                        break;
-                    case R.id.item_profile:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(ProfileFragment.class.getSimpleName())) {
-                            popBackStack();
-                            return true;
-                        }
-                        mRootFragment = ProfileFragment.newInstance(getContext());
-                        break;
-                    case R.id.item_write:
-                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WriteFragment.class.getSimpleName())) {
-                            popBackStack();
-                            return true;
-                        }
-                        mRootFragment = WriteFragment.newInstance(getContext());
-                        break;
-                    default:
-                        return false;
-                }
-                openRootFragment(mRootFragment);
-                return true;
-            }
-        });
+//        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.item_wallet:
+//                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WalletMainFragment.class.getSimpleName())) {
+//                            popBackStack();
+//                            return true;
+//                        }
+//                        mRootFragment = WalletMainFragment.newInstance(getContext());
+//                        break;
+//                    case R.id.item_profile:
+//                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(ProfileFragment.class.getSimpleName())) {
+//                            popBackStack();
+//                            return true;
+//                        }
+//                        mRootFragment = ProfileFragment.newInstance(getContext());
+//                        break;
+//                    case R.id.item_write:
+//                        if (mRootFragment != null && mRootFragment.getClass().getSimpleName().contains(WriteFragment.class.getSimpleName())) {
+//                            popBackStack();
+//                            return true;
+//                        }
+//                        mRootFragment = WriteFragment.newInstance(getContext());
+//                        break;
+//                    default:
+//                        return false;
+//                }
+//                openRootFragment(mRootFragment);
+//                return true;
+//            }
+//        });
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() { //Update wallet balance change listener
             @Override
@@ -398,26 +402,26 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
     }
 
     private void initBottomNavViewWithFont(int fontId) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
-        try {
-            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
-            shiftingMode.setAccessible(true);
-            shiftingMode.setBoolean(menuView, false);
-            shiftingMode.setAccessible(false);
-            for (int i = 0; i < menuView.getChildCount(); i++) {
-                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                TextView mSmallLabel = (TextView) item.findViewById(android.support.design.R.id.smallLabel);
-                TextView mLargeLabel = (TextView) item.findViewById(android.support.design.R.id.largeLabel);
-                mSmallLabel.setTypeface(FontManager.getInstance().getFont(getString(fontId)));
-                mLargeLabel.setTypeface(FontManager.getInstance().getFont(getString(fontId)));
-                item.setShiftingMode(false);
-                item.setChecked(item.getItemData().isChecked());
-            }
-        } catch (NoSuchFieldException e) {
-            Log.e("BNVHelper", "Unable to get shift mode field", e);
-        } catch (IllegalAccessException e) {
-            Log.e("BNVHelper", "Unable to change value of shift mode", e);
-        }
+//        BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
+//        try {
+//            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
+//            shiftingMode.setAccessible(true);
+//            shiftingMode.setBoolean(menuView, false);
+//            shiftingMode.setAccessible(false);
+//            for (int i = 0; i < menuView.getChildCount(); i++) {
+//                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
+//                TextView mSmallLabel = (TextView) item.findViewById(android.support.design.R.id.smallLabel);
+//                TextView mLargeLabel = (TextView) item.findViewById(android.support.design.R.id.largeLabel);
+//                mSmallLabel.setTypeface(FontManager.getInstance().getFont(getString(fontId)));
+//                mLargeLabel.setTypeface(FontManager.getInstance().getFont(getString(fontId)));
+//                item.setShiftingMode(false);
+//                item.setChecked(item.getItemData().isChecked());
+//            }
+//        } catch (NoSuchFieldException e) {
+//            Log.e("BNVHelper", "Unable to get shift mode field", e);
+//        } catch (IllegalAccessException e) {
+//            Log.e("BNVHelper", "Unable to change value of shift mode", e);
+//        }
     }
 
     @Override
@@ -514,30 +518,30 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     protected void updateTheme() {
-        mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
-        mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_tab_background);
-        mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
-        mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+//        mBottomNavigationView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
+//        mBottomNavigationView.setItemBackgroundResource(R.drawable.bottom_nav_view_tab_background);
+//        mBottomNavigationView.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+//        mBottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
         resetNavBarIconsWithTheme(blackThemeIcons);
-        recolorStatusBar(R.color.colorPrimary);
+//        recolorStatusBar(R.color.colorPrimary);
 
         initBottomNavViewWithFont(R.string.simplonMonoRegular);
     }
 
     public void resetNavBarIconsWithTheme(int[] icons) {
-        Menu menu = mBottomNavigationView.getMenu();
-        menu.findItem(R.id.item_write).setIcon(icons[0]);
-        menu.findItem(R.id.item_wallet).setIcon(icons[1]);
-        menu.findItem(R.id.item_profile).setIcon(icons[2]);
+//        Menu menu = mBottomNavigationView.getMenu();
+//        menu.findItem(R.id.item_write).setIcon(icons[0]);
+//        menu.findItem(R.id.item_wallet).setIcon(icons[1]);
+//        menu.findItem(R.id.item_profile).setIcon(icons[2]);
 
         //menu.findItem(R.id.item_send).setIcon(icons[3]);
     }
 
-    public void recolorStatusBar(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
-        }
-    }
+//    public void recolorStatusBar(int color) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setStatusBarColor(ContextCompat.getColor(getContext(), color));
+//        }
+//    }
 
     public void stopUpdateService() {
         if (mUpdateService != null) {
@@ -615,7 +619,10 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void openStartPageFragment(boolean isLogin) {
-        Fragment fragment = StartPageFragment.newInstance(isLogin, getContext());
+        //Fragment fragment = StartPageFragment.newInstance(isLogin, getContext());
+        Fragment fragment = IntroduceFragment.newInstance(getContext());
+        //Fragment fragment = InputPasswordFragment.newInstance(getContext());
+        //Fragment fragment = InputFingerprintFragment.newInstance(getContext());
         openRootFragment(fragment);
     }
 

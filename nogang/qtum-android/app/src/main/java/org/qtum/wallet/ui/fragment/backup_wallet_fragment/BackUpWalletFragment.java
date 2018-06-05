@@ -119,7 +119,7 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletVi
             mButtonCopy.setVisibility(View.GONE);
             copyPassphare.setVisibility(View.VISIBLE);
         }
-        getMainActivity().recolorStatusBar(R.color.colorPrimary);
+        //getMainActivity().recolorStatusBar(R.color.colorPrimary);
     }
 
     @Override
