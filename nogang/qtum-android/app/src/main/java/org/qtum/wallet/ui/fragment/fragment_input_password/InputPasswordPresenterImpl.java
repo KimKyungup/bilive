@@ -15,6 +15,9 @@ public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implem
 
     private int nInputNumCount = 0;
 
+    /* For UI Demo */
+    private int testMode = 0;
+
     public InputPasswordPresenterImpl(InputPasswordView fragmentView, InputPasswordInteractor interactor) {
         mFragmentView = fragmentView;
         mFragmentInteractor = interactor;
@@ -34,10 +37,29 @@ public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implem
         nInputNumCount++;
         mFragmentView.setInputNumberPinImage(nInputNumCount);
 
-        /** Test code **/
+        /** For UI Test code **/
         if (nInputNumCount == PASSWORD_LENGTH) {
-            // Test
-            getView().openInputFingerprintFragment();
+            switch (testMode) {
+                case 0:
+                    getView().setInputNumberPinImage(0);
+                    getView().setDescriptionMessage(R.string.password_retry_guide_description);
+                    nInputNumCount = 0;
+                    break;
+                case 1:
+                    getView().setInputNumberPinImage(0);
+                    getView().setDescriptionMessage(R.string.password_input_guide_description);
+                    nInputNumCount = 0;
+                    break;
+                case 2:
+                    getView().setKeypadWrongImage();
+                    getView().setDescriptionMessage(R.string.password_wrong_guide_description);
+                    nInputNumCount = 5;
+                    break;
+                case 3:
+                    getView().openInputFingerprintFragment();
+                    break;
+            }
+            testMode++;
         }
 
 

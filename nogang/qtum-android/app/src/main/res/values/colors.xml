@@ -80,20 +80,27 @@
     <color name="background">#191b2b</color>
     <color name="text_color_normal">#ffffff</color>
     <color name="text_color_disabled">#5e5f6b</color>
+    <color name="btn_color">#2e2e48</color>
+    <color name="edit_text_background">#6c63ff</color>
+    <color name="seek_bar_fill">#6c63ff</color>
+    <color name="seek_bar_empty">#ffffff</color>
 
     // Main Activity
-    <color name="top_menu_btc_underline">#f5a623</color>
-    <color name="top_menu_eth_underline">#00e3ad</color>
-    <color name="top_menu_qtum_underline">#4a90e2</color>
-
-    <color name="bottom_menu_background">#2e2e48</color>
-
-    <color name="write_editor_background">#6c63ff</color>
     <color name="write_editor_cursor">#cfcfcf</color>
 
     <color name="write_all_posts">#dcdcdc</color>
-    <color name="post_selector_background">#2e2e48</color>
     <color name="post_selector_font_color">#dadfea</color>
 
     <color name="post_list_divider_color">#2e2e48</color>
+
+    <color name="my_wallet_all_coin_color">#6c63ff</color>
+    <color name="my_wallet_eth_color">#00e3ad</color>
+    <color name="my_wallet_qtum_color">#4a90e2</color>
+
+    <color name="my_wallet_border">#484848</color>
+
+    <color name="my_wallet_balance_decrease_color">#4a90e2</color>
+    <color name="my_wallet_balance_increase_color">#f74360</color>
+
+    <color name="scroll_bar_color">#5f5f5f</color>
 </resources>

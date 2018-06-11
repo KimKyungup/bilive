@@ -107,7 +107,7 @@
         android:id="@+id/buttonIntroduceStart"
         android:layout_width="0dp"
         android:layout_height="54dp"
-        android:background="#6c63ff"
+        android:background="@color/colorPrimary"
         android:text="@string/introduce_start"
         android:textColor="@color/text_color_normal"
         android:textSize="15sp"

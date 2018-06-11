@@ -3,13 +3,8 @@ package org.qtum.wallet.ui.fragment.fragment_introduce;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -17,7 +12,6 @@ import android.widget.ImageView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordAction;
 import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -29,7 +23,7 @@ public class IntroduceFragment extends BaseFragment implements IntroduceView{
 
     private IntroducePresenter mFragmentPresenter;
 
-    private IntroduceFragmentPagerAdapter mIntroduceFragmentPagerAdapter;
+    private IntroduceFragmentPagerAdapter mFragmentPagerAdapter;
 
     @BindView(R.id.viewPagerIntroduce)
     ViewPager viewPagerIntroduce;
@@ -76,10 +70,10 @@ public class IntroduceFragment extends BaseFragment implements IntroduceView{
         super.initializeViews();
 
         // Init Pager Adapter
-        mIntroduceFragmentPagerAdapter = new IntroduceFragmentPagerAdapter(getChildFragmentManager());
+        mFragmentPagerAdapter = new IntroduceFragmentPagerAdapter(getChildFragmentManager());
 
         // Assign Adapter
-        viewPagerIntroduce.setAdapter(mIntroduceFragmentPagerAdapter);
+        viewPagerIntroduce.setAdapter(mFragmentPagerAdapter);
 
         // Page 변경 이벤트 등록
         viewPagerIntroduce.addOnPageChangeListener(onPageChangeListener);
@@ -108,6 +102,17 @@ public class IntroduceFragment extends BaseFragment implements IntroduceView{
                 break;
             }
         }
+    }
+
+    private void handleStartButton(int position)
+    {
+        if (prevPage == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 2 && position == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 1) {
+            showStartButton();
+        }
+        else if (prevPage == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 1 && position == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 2) {
+            hideStartButton();
+        }
+        prevPage = position;
     }
 
     // Introduce Page 변경
@@ -183,14 +188,7 @@ public class IntroduceFragment extends BaseFragment implements IntroduceView{
         @Override
         public void onPageSelected(int position) {
             updateDotState(position);
-
-            if (prevPage == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 2 && position == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 1) {
-                showStartButton();
-            }
-            else if (prevPage == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 1 && position == IntroduceChildFragment.INTRODUCE_PAGE_MAX - 2) {
-                hideStartButton();
-            }
-            prevPage = position;
+            handleStartButton(position);
         }
 
         @Override

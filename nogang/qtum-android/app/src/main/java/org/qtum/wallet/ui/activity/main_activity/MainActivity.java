@@ -53,6 +53,8 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.fragment_input_fingerprint.InputFingerprintFragment;
 import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordFragment;
 import org.qtum.wallet.ui.fragment.fragment_introduce.IntroduceFragment;
+import org.qtum.wallet.ui.fragment.fragment_main.MainAction;
+import org.qtum.wallet.ui.fragment.fragment_main.MainFragment;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinAction;
 import org.qtum.wallet.ui.fragment.pin_fragment.PinFragment;
 import org.qtum.wallet.ui.fragment.start_page_fragment.StartPageFragment;
@@ -623,6 +625,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
         Fragment fragment = IntroduceFragment.newInstance(getContext());
         //Fragment fragment = InputPasswordFragment.newInstance(getContext());
         //Fragment fragment = InputFingerprintFragment.newInstance(getContext());
+        //Fragment fragment = MainFragment.newInstance(getContext(), MainAction.WRITE);
         openRootFragment(fragment);
     }
 

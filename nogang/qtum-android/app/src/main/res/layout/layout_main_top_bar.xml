@@ -5,17 +5,18 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:layout_editor_absoluteY="25dp">
 
     <ImageView
         android:id="@+id/imageViewTopbarLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="17dp"
+        android:layout_width="91dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_sample" />
+        app:srcCompat="@drawable/logo_scrb" />
 
     <TextView
         android:id="@+id/textViewTopbarAbbrivationQTUM"
@@ -33,21 +34,9 @@
         android:id="@+id/textViewTopbarAllCoins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16.5dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="23dp"
         android:text="@string/wallet_all_coin"
-        android:textColor="@color/text_color_normal"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/textViewTopbarAbbrivationBTC"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewTopbarAbbrivationBTC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="19dp"
-        android:layout_marginTop="23dp"
-        android:text="@string/wallet_btc_abbreviation"
         android:textColor="@color/text_color_normal"
         android:textSize="10sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewTopbarAbbrivationETH"
@@ -57,7 +46,7 @@
         android:id="@+id/textViewTopbarAbbrivationETH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="14dp"
+        android:layout_marginEnd="18dp"
         android:layout_marginTop="23dp"
         android:text="@string/wallet_eth_abbreviation"
         android:textColor="@color/text_color_normal"
@@ -66,16 +55,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/viewTopbarUnderlineQTUM"
-        android:layout_width="20dp"
+        android:id="@+id/viewTopbarUnderlineAllCoins"
+        android:layout_width="24dp"
         android:layout_height="3dp"
-        android:layout_marginEnd="-2dp"
-        android:layout_marginStart="-3dp"
         android:layout_marginTop="6dp"
-        android:background="@color/top_menu_btc_underline"
-        app:layout_constraintEnd_toEndOf="@+id/textViewTopbarAbbrivationBTC"
-        app:layout_constraintStart_toStartOf="@+id/textViewTopbarAbbrivationBTC"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTopbarAbbrivationBTC" />
+        android:background="@color/my_wallet_all_coin_color"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTopbarAllCoins"
+        app:layout_constraintStart_toStartOf="@+id/textViewTopbarAllCoins"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTopbarAllCoins" />
 
     <View
         android:id="@+id/viewTopbarUnderlineETH"
@@ -84,28 +71,22 @@
         android:layout_marginEnd="-2dp"
         android:layout_marginStart="-2dp"
         android:layout_marginTop="6dp"
-        android:background="@color/top_menu_eth_underline"
+        android:background="@color/my_wallet_eth_color"
         app:layout_constraintEnd_toEndOf="@+id/textViewTopbarAbbrivationETH"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textViewTopbarAbbrivationETH"
         app:layout_constraintTop_toBottomOf="@+id/textViewTopbarAbbrivationETH" />
 
     <View
-        android:id="@+id/viewTopbarUnderlineBTC"
+        android:id="@+id/viewTopbarUnderlineQTUM"
         android:layout_width="0dp"
         android:layout_height="3dp"
         android:layout_marginEnd="3dp"
         android:layout_marginStart="2dp"
         android:layout_marginTop="6dp"
-        android:background="@color/top_menu_qtum_underline"
+        android:background="@color/my_wallet_qtum_color"
         app:layout_constraintEnd_toEndOf="@+id/textViewTopbarAbbrivationQTUM"
         app:layout_constraintStart_toStartOf="@+id/textViewTopbarAbbrivationQTUM"
         app:layout_constraintTop_toBottomOf="@+id/textViewTopbarAbbrivationQTUM" />
-
-    <android.support.constraint.Group
-        android:id="@+id/groupTopBarCoinList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="textViewTopbarAbbrivationQTUM,textViewTopbarAllCoins,textViewTopbarAbbrivationBTC,textViewTopbarAbbrivationETH,viewTopbarUnderlineQTUM,viewTopbarUnderlineETH,viewTopbarUnderlineBTC" />
 
 </android.support.constraint.ConstraintLayout>

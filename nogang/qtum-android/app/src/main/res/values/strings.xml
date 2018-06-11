@@ -273,12 +273,12 @@
     // Main Activity
     // Top bar
     <string name="wallet_all_coin">전체</string>
-    <string name="wallet_btc_abbreviation">BTC</string>
-    <string name="wallet_btc_name">비트코인</string>
     <string name="wallet_eth_abbreviation">ETH</string>
     <string name="wallet_eth_name">이더리움</string>
+    <string name="wallet_eth_name_and_abbreviation">이더리움(ETH)</string>
     <string name="wallet_qtum_abbreviation">QTUM</string>
     <string name="wallet_qtum_name">퀀텀</string>
+    <string name="wallet_qtum_name_and_abbreviation">퀀텀(QTUM)</string>
 
     // Bottom bar
     <string name="bottom_bar_write">기록하기</string>
@@ -297,4 +297,51 @@
     <string name="write_all_posts">전체글</string>
     <string name="write_my_posts">내 글</string>
 
+    // My wallet all coins
+    <string name="my_wallet_total_assets">총 보유자산</string>
+    <string name="my_wallet_recent_activity">최근 활동</string>
+    <string name="my_wallet_recent_activity_sent">%1$s 보냄</string>
+    <string name="my_wallet_recent_activity_send">%1$s 보내기</string>
+    <string name="my_wallet_recent_activity_receive">%1$s 받음</string>
+    <string name="my_wallet_recent_activity_post">%1$s으로 글 기록</string>
+
+    // Send coin
+    <string name="send_coin_address">받는 주소</string>
+    <string name="send_coin_amount">보낼 금액</string>
+    <string name="send_coin_valid_address">유효한 주소 입니다</string>
+    <string name="send_coin_invalid_address">주소 길이가 너무 짧습니다</string>
+    <string name="send_coin_recent_used">최근 사용</string>
+    <string name="send_coin_code_scan">코드 스캔</string>
+
+    <string name="sample_post_body">존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언
+\n\n
+오늘 김정은 위원장과 나는 완전한 비핵화를 통해 핵 없는 한반도를 실현하는 것이 우리의 공동 목표라는 것을 확인했습니다.
+\n\n
+북측이 먼저 취한 핵 동결 조치들은 대단히 중대한 의미를 가지고 있습니다. 한반도의 완전한 비핵화를 위한 소중한 출발이 될 것입니다. 앞으로 완전한 비핵화를 위해 남과 북이 더욱 긴밀히 협력해 나갈 것을 분명히 밝힙니다.
+\n\n
+우리는 또한 종전선언과 평화협정을 통해 한반도의 불안정한 정전 체제를 종식시키고 항구적이고 공고한 평화체제를 구축해나가기로 합의했습니다. 한반도를 둘러싼 국제 질서를 근본적으로 바꿀 수 있는 매우 중요한 합의입니다.
+\n\n
+#판문점 #문재인 #김정은 #넘어가 #한 #두자 #세글자 #네글자아 #글_양옆10
+\n\n
+존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언
+\n\n
+오늘 김정은 위원장과 나는 완전한 비핵화를 통해 핵 없는 한반도를 실현하는 것이 우리의 공동 목표라는 것을 확인했습니다.
+\n\n
+북측이 먼저 취한 핵 동결 조치들은 대단히 중대한 의미를 가지고 있습니다. 한반도의 완전한 비핵화를 위한 소중한 출발이 될 것입니다. 앞으로 완전한 비핵화를 위해 남과 북이 더욱 긴밀히 협력해 나갈 것을 분명히 밝힙니다.
+\n\n
+우리는 또한 종전선언과 평화협정을 통해 한반도의 불안정한 정전 체제를 종식시키고 항구적이고 공고한 평화체제를 구축해나가기로 합의했습니다. 한반도를 둘러싼 국제 질서를 근본적으로 바꿀 수 있는 매우 중요한 합의입니다.
+\n\n
+#판문점 #문재인 #김정은 #넘어가 #한 #두자 #세글자 #네글자아 #글_양옆10
+\n\n
+존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언
+\n\n
+오늘 김정은 위원장과 나는 완전한 비핵화를 통해 핵 없는 한반도를 실현하는 것이 우리의 공동 목표라는 것을 확인했습니다.
+\n\n
+북측이 먼저 취한 핵 동결 조치들은 대단히 중대한 의미를 가지고 있습니다. 한반도의 완전한 비핵화를 위한 소중한 출발이 될 것입니다. 앞으로 완전한 비핵화를 위해 남과 북이 더욱 긴밀히 협력해 나갈 것을 분명히 밝힙니다.
+\n\n
+우리는 또한 종전선언과 평화협정을 통해 한반도의 불안정한 정전 체제를 종식시키고 항구적이고 공고한 평화체제를 구축해나가기로 합의했습니다. 한반도를 둘러싼 국제 질서를 근본적으로 바꿀 수 있는 매우 중요한 합의입니다.
+\n\n
+#판문점 #문재인 #김정은 #넘어가 #한 #두자 #세글자 #네글자아 #글_양옆10
+\n\n
+    </string>
 </resources>
