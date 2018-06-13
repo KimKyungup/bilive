@@ -19,7 +19,7 @@ import butterknife.OnClick;
 
 public class ImportWalletFragment extends BaseFragment implements ImportWalletView {
 
-    private final int LAYOUT = org.qtum.wallet.R.layout.fragment_import_wallet;
+    private final int LAYOUT = org.qtum.wallet.R.layout.fragment_import_wallet_prev;
     private ImportWalletPresenter mImportWalletFragmentPresenter;
 
     @BindView(org.qtum.wallet.R.id.bt_cancel)

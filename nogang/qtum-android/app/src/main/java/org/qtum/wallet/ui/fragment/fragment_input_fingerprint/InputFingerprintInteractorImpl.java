@@ -2,7 +2,7 @@ package org.qtum.wallet.ui.fragment.fragment_input_fingerprint;
 
 import android.content.Context;
 
-public class InputFingerprintInteractorImpl implements InputFingerprintInteractor {
+public class InputFingerprintInteractorImpl implements IInputFingerprintInteractor {
 
     private Context mContext;
 

@@ -81,8 +81,8 @@
     <color name="text_color_normal">#ffffff</color>
     <color name="text_color_disabled">#5e5f6b</color>
     <color name="btn_color">#2e2e48</color>
-    <color name="edit_text_background">#6c63ff</color>
-    <color name="seek_bar_fill">#6c63ff</color>
+    <color name="edit_text_background">@color/colorPrimary</color>
+    <color name="seek_bar_fill">@color/colorPrimary</color>
     <color name="seek_bar_empty">#ffffff</color>
 
     // Main Activity
@@ -93,7 +93,7 @@
 
     <color name="post_list_divider_color">#2e2e48</color>
 
-    <color name="my_wallet_all_coin_color">#6c63ff</color>
+    <color name="my_wallet_all_coin_color">@color/colorPrimary</color>
     <color name="my_wallet_eth_color">#00e3ad</color>
     <color name="my_wallet_qtum_color">#4a90e2</color>
 
@@ -103,4 +103,8 @@
     <color name="my_wallet_balance_increase_color">#f74360</color>
 
     <color name="scroll_bar_color">#5f5f5f</color>
+
+    // Setting
+    <color name="setting_category_text_color">@color/colorPrimary</color>
+    <color name="setting_border_color">#1effffff</color>
 </resources>

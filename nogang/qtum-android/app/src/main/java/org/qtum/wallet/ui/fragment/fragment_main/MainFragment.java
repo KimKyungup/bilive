@@ -13,25 +13,25 @@ import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.fragment.fragment_main_my_wallet.MainMyWalletFragment;
-import org.qtum.wallet.ui.fragment.fragment_main_my_wallet_send.MainMyWalletSendFragment;
-import org.qtum.wallet.ui.fragment.fragment_main_setting.MainSettingFragment;
-import org.qtum.wallet.ui.fragment.fragment_main_write.MainWriteFragment;
-import org.qtum.wallet.ui.fragment.fragment_main_write_detail.MainWriteDetailFragment;
+import org.qtum.wallet.ui.fragment.fragment_my_wallet.MyWalletFragment;
+import org.qtum.wallet.ui.fragment.fragment_my_wallet_send_coin.MyWalletSendCoinFragment;
+import org.qtum.wallet.ui.fragment.fragment_scribble.ScribbleFragment;
+import org.qtum.wallet.ui.fragment.fragment_setting.SettingFragment;
+import org.qtum.wallet.ui.fragment.fragment_scribble_detail.ScribbleDetailFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainFragment extends BaseFragment implements MainView, IMainBottomBarManager, IMainTopBarManager, IMainChildFragmentManager {
+public class MainFragment extends BaseFragment implements IMainView {
 
     private final static String ACTION = "action";
 
-    private MainPresenter mFragmentPresenter;
+    private IMainPresenter mFragmentPresenter;
 
-    private MainWriteFragment mMainWriteFragment = null;
-    private MainMyWalletFragment mMainMyWalletFragment = null;
-    private MainSettingFragment mMainSettingFragment = null;
+    private ScribbleFragment mMainWriteFragment = null;
+    private MyWalletFragment mMainMyWalletFragment = null;
+    private SettingFragment mMainSettingFragment = null;
 
     @BindView(R.id.frameLayoutBottomBarWrite)
     FrameLayout frameLayoutBottomBarWrite;
@@ -97,7 +97,7 @@ public class MainFragment extends BaseFragment implements MainView, IMainBottomB
     }
 
     @Override
-    protected MainPresenter getPresenter() {
+    protected IMainPresenter getPresenter() {
         return mFragmentPresenter;
     }
 
@@ -119,66 +119,53 @@ public class MainFragment extends BaseFragment implements MainView, IMainBottomB
     public void openMainWriteMenu() {
          writeMenuSelect();
          openMainWriteFragment();
-         hideTopMenu();
     }
 
     @Override
     public void openMyWalletMenu() {
         myWalletMenuSelect();
         openMyWalletFragment();
-        showTopMenu();
     }
 
     @Override
     public void openSettingMenu() {
         settingMenuSelect();
         openSettingFragment();
-        hideTopMenu();
-
-        // Only for test
-        openMainMyWalletSendFragment();
     }
 
-    @Override
     public void openMainWriteDetailFragment() {
-        MainWriteDetailFragment fragment = MainWriteDetailFragment.newInstance(getContext());
+        ScribbleDetailFragment fragment = ScribbleDetailFragment.newInstance(getContext());
         openFragment(fragment);
     }
 
-    @Override
     public void openMainMyWalletSendFragment() {
-        MainMyWalletSendFragment fragment = MainMyWalletSendFragment.newInstance(getContext());
+        MyWalletSendCoinFragment fragment = MyWalletSendCoinFragment.newInstance(getContext());
         openFragment(fragment);
     }
 
-    @Override
     public void showBottomBar() {
         layoutMainBottomBar.setVisibility(View.VISIBLE);
         layoutMainBottomBar.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.introduce_start_button_enter));
     }
 
-    @Override
     public void selectAllCoin() {
         viewTopbarUnderlineAllCoins.setVisibility(View.VISIBLE);
         viewTopbarUnderlineETH.setVisibility(View.INVISIBLE);
         viewTopbarUnderlineQTUM.setVisibility(View.INVISIBLE);
     }
 
-    @Override
     public void selectETH() {
         viewTopbarUnderlineAllCoins.setVisibility(View.INVISIBLE);
         viewTopbarUnderlineETH.setVisibility(View.VISIBLE);
         viewTopbarUnderlineQTUM.setVisibility(View.INVISIBLE);
     }
 
-    @Override
     public void selectQTUM() {
         viewTopbarUnderlineAllCoins.setVisibility(View.INVISIBLE);
         viewTopbarUnderlineETH.setVisibility(View.INVISIBLE);
         viewTopbarUnderlineQTUM.setVisibility(View.VISIBLE);
     }
 
-    @Override
     public void hideBottomBar() {
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.introduce_start_button_exit);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -201,11 +188,29 @@ public class MainFragment extends BaseFragment implements MainView, IMainBottomB
         layoutMainBottomBar.startAnimation(animation);
     }
 
+    public void showTopMenu()
+    {
+        textViewTopbarAllCoins.setVisibility(View.VISIBLE);
+        textViewTopbarAbbrivationETH.setVisibility(View.VISIBLE);
+        textViewTopbarAbbrivationQTUM.setVisibility(View.VISIBLE);
+        viewTopbarUnderlineAllCoins.setVisibility(View.INVISIBLE);
+        viewTopbarUnderlineETH.setVisibility(View.INVISIBLE);
+        viewTopbarUnderlineQTUM.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideTopMenu()
+    {
+        textViewTopbarAllCoins.setVisibility(View.INVISIBLE);
+        textViewTopbarAbbrivationETH.setVisibility(View.INVISIBLE);
+        textViewTopbarAbbrivationQTUM.setVisibility(View.INVISIBLE);
+        viewTopbarUnderlineAllCoins.setVisibility(View.INVISIBLE);
+        viewTopbarUnderlineETH.setVisibility(View.INVISIBLE);
+        viewTopbarUnderlineQTUM.setVisibility(View.INVISIBLE);
+    }
+
     private void openMainWriteFragment() {
         if (mMainWriteFragment == null) {
-            mMainWriteFragment = MainWriteFragment.newInstance();
-            mMainWriteFragment.setMainBottomBarManager(this);
-            mMainWriteFragment.setMainChildFragmentManager(this);
+            mMainWriteFragment = ScribbleFragment.newInstance();
         }
 
         getChildFragmentManager()
@@ -217,9 +222,7 @@ public class MainFragment extends BaseFragment implements MainView, IMainBottomB
 
     private void openMyWalletFragment() {
         if (mMainMyWalletFragment == null) {
-            mMainMyWalletFragment = MainMyWalletFragment.newInstance();
-            mMainMyWalletFragment.setMainTopBarManager(this);
-            mMainMyWalletFragment.setMainChildFragmentManager(this);
+            mMainMyWalletFragment = MyWalletFragment.newInstance();
         }
 
         getChildFragmentManager()
@@ -231,7 +234,7 @@ public class MainFragment extends BaseFragment implements MainView, IMainBottomB
 
     private void openSettingFragment() {
         if (mMainSettingFragment == null) {
-            mMainSettingFragment = MainSettingFragment.newInstance();
+            mMainSettingFragment = SettingFragment.newInstance();
         }
 
         getChildFragmentManager()
@@ -273,26 +276,6 @@ public class MainFragment extends BaseFragment implements MainView, IMainBottomB
         textViewBottomBarWrite.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color_disabled));
         textViewBottomBarMyWallet.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color_disabled));
         textViewBottomBarSetting.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color_normal));
-    }
-
-    private void showTopMenu()
-    {
-        textViewTopbarAllCoins.setVisibility(View.VISIBLE);
-        textViewTopbarAbbrivationETH.setVisibility(View.VISIBLE);
-        textViewTopbarAbbrivationQTUM.setVisibility(View.VISIBLE);
-        viewTopbarUnderlineAllCoins.setVisibility(View.INVISIBLE);
-        viewTopbarUnderlineETH.setVisibility(View.INVISIBLE);
-        viewTopbarUnderlineQTUM.setVisibility(View.INVISIBLE);
-    }
-
-    private void hideTopMenu()
-    {
-        textViewTopbarAllCoins.setVisibility(View.INVISIBLE);
-        textViewTopbarAbbrivationETH.setVisibility(View.INVISIBLE);
-        textViewTopbarAbbrivationQTUM.setVisibility(View.INVISIBLE);
-        viewTopbarUnderlineAllCoins.setVisibility(View.INVISIBLE);
-        viewTopbarUnderlineETH.setVisibility(View.INVISIBLE);
-        viewTopbarUnderlineQTUM.setVisibility(View.INVISIBLE);
     }
 
     @OnClick({R.id.frameLayoutBottomBarWrite, R.id.frameLayoutBottomBarMyWallet, R.id.frameLayoutBottomBarSetting, R.id.textViewTopbarAllCoins, R.id.textViewTopbarAbbrivationETH, R.id.textViewTopbarAbbrivationQTUM,})

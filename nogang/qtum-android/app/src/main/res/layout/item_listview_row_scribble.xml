@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:paddingBottom="0dp"
+    android:paddingEnd="25dp"
+    android:paddingStart="25dp"
+    android:paddingTop="15dp">
+
+    <TextView
+        android:id="@+id/textViewPostBody"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:text="존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언  오늘 김정은 위원장과 나는 완전한 비핵화를 통해 핵 없는 한반도를 실현하는 것이 우리의 공동 목표라는 것을 확인했습니다.  북측이 먼저 취한 핵 동결 조치들은 대단히 중대한 의미를 가지고 있습니다. 한반도의 완전한 비핵화를 위한 소중한 출발이 될 것입니다. 앞으로 완전한 비핵화를 위해 남과 북이 더욱 긴밀히 협력해 나갈 것을 분명히 밝힙니다.  우리는 또한 종전선언과 평화협정을 통해 한반도의 불안정한 정전 체제를 종식시키고 항구적이고 공고한 평화체제를 구축해나가기로 합의했습니다. 한반도를 둘러싼 국제 질서를 근본적으로 바꿀 수 있는 매우 중요한 합의입니다.   #판문점 #문재인 #김정은 #넘어가 #한 #두자 #세글자 #네글자아 #글_양옆10"
+        android:textColor="@color/text_color_normal"
+        android:textSize="15sp"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frameLayoutHashTags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPostBody">
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageViewWalletHistory"
+        android:layout_width="9dp"
+        android:layout_height="9dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutHashTags"
+        app:srcCompat="@drawable/landing_time_ic" />
+
+    <TextView
+        android:id="@+id/textViewPostInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_marginStart="5dp"
+        android:gravity="left|center_vertical"
+        android:text="TextView"
+        android:textColor="@color/text_color_normal"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewWalletHistory"
+        app:layout_constraintStart_toEndOf="@+id/imageViewWalletHistory"
+        app:layout_constraintTop_toTopOf="@+id/imageViewWalletHistory"
+        tools:text="2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글" />
+
+    <TextView
+        android:id="@+id/textViewListViewDivider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="18dp"
+        android:background="@color/post_list_divider_color"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/textViewPostBody"
+        app:layout_constraintStart_toStartOf="@+id/textViewPostBody"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPostInfo" />
+</android.support.constraint.ConstraintLayout>

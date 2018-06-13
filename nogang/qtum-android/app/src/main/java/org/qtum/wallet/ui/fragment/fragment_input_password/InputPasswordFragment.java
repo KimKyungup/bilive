@@ -10,19 +10,18 @@ import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import org.qtum.wallet.ui.fragment.fragment_input_fingerprint.InputFingerprintFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class InputPasswordFragment extends BaseFragment implements InputPasswordView {
+public class InputPasswordFragment extends BaseFragment implements IInputPasswordView {
 
     private final static int MAX_INPUT_PIN_NUMBER = 6;
     private final static String ACTION = "action";
 
-    private InputPasswordPresenter mFragmentPresenter;
+    private IInputPasswordPresenter mFragmentPresenter;
 
     @BindView(R.id.textViewPasswordDescription)
     TextView textViewPasswordDescription;
@@ -95,7 +94,7 @@ public class InputPasswordFragment extends BaseFragment implements InputPassword
     }
 
     @Override
-    protected InputPasswordPresenter getPresenter() {
+    protected IInputPasswordPresenter getPresenter() {
         return mFragmentPresenter;
     }
 

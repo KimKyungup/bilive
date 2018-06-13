@@ -5,12 +5,11 @@ import android.os.Bundle;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
-public class BaseFormFragment extends BaseFragment implements BaseFormView {
+public class BaseFormFragment extends BaseFragment implements IBaseFormView {
 
-    private BaseFormPresenter mFragmentPresenter;
+    private IBaseFormPresenter mFragmentPresenter;
 
     public static BaseFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -25,7 +24,7 @@ public class BaseFormFragment extends BaseFragment implements BaseFormView {
     }
 
     @Override
-    protected BaseFormPresenter getPresenter() {
+    protected IBaseFormPresenter getPresenter() {
         return mFragmentPresenter;
     }
 

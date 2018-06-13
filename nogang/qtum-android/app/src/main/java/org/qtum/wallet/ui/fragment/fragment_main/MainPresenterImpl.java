@@ -2,20 +2,20 @@ package org.qtum.wallet.ui.fragment.fragment_main;
 
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-public class MainPresenterImpl extends BaseFragmentPresenterImpl implements MainPresenter {
+public class MainPresenterImpl extends BaseFragmentPresenterImpl implements IMainPresenter {
 
-    private MainView mFragmentView;
-    private MainInteractor mFragmentInteractor;
+    private IMainView mFragmentView;
+    private IMainInteractor mFragmentInteractor;
 
     private MainAction action;
 
-    public MainPresenterImpl(MainView fragmentView, MainInteractor interactor) {
+    public MainPresenterImpl(IMainView fragmentView, IMainInteractor interactor) {
         mFragmentView = fragmentView;
         mFragmentInteractor = interactor;
     }
 
     @Override
-    public MainView getView() {
+    public IMainView getView() {
         return mFragmentView;
     }
 

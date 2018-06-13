@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import org.qtum.wallet.ui.fragment.fragment_main.MainAction;
 import org.qtum.wallet.ui.fragment.fragment_main.MainFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -17,9 +15,9 @@ import org.qtum.wallet.ui.fragment_factory.Factory;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class InputFingerprintFragment extends BaseFragment implements InputFingerprintView {
+public class InputFingerprintFragment extends BaseFragment implements IInputFingerprintView {
 
-    private InputFingerprintPresenter mFragmentPresenter;
+    private IInputFingerprintPresenter mFragmentPresenter;
 
     @BindView(R.id.buttonRegisterLater)
     Button buttonRegisterLater;
@@ -40,7 +38,7 @@ public class InputFingerprintFragment extends BaseFragment implements InputFinge
     }
 
     @Override
-    protected InputFingerprintPresenter getPresenter() {
+    protected IInputFingerprintPresenter getPresenter() {
         return mFragmentPresenter;
     }
 

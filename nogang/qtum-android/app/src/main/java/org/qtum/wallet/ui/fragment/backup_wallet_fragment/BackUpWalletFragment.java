@@ -67,7 +67,7 @@ public class BackUpWalletFragment extends BaseFragment implements BackUpWalletVi
     }
     @Override
     protected int getLayout() {
-        return R.layout.fragment_back_up_wallet;
+        return R.layout.fragment_back_up_wallet_prev;
     }
 
     private void onBack() {

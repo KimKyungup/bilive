@@ -2,18 +2,18 @@ package org.qtum.wallet.ui.fragment.fragment_for_copy;
 
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-public class BaseFormPresenterImpl extends BaseFragmentPresenterImpl implements BaseFormPresenter {
+public class BaseFormPresenterImpl extends BaseFragmentPresenterImpl implements IBaseFormPresenter {
 
-    private BaseFormView mFragmentView;
-    private BaseFormInteractor mFragmentInteractor;
+    private IBaseFormView mFragmentView;
+    private IBaseFormInteractor mFragmentInteractor;
 
-    public BaseFormPresenterImpl(BaseFormView fragmentView, BaseFormInteractor interactor) {
+    public BaseFormPresenterImpl(IBaseFormView fragmentView, IBaseFormInteractor interactor) {
         mFragmentView = fragmentView;
         mFragmentInteractor = interactor;
     }
 
     @Override
-    public BaseFormView getView() {
+    public IBaseFormView getView() {
         return mFragmentView;
     }
 

@@ -1,15 +1,14 @@
 package org.qtum.wallet.ui.fragment.fragment_input_password;
 
 import org.qtum.wallet.R;
-import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenter;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragmentPresenterImpl;
 
-public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implements InputPasswordPresenter {
+public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implements IInputPasswordPresenter {
 
     private final static int PASSWORD_LENGTH = 6;
 
-    private InputPasswordView mFragmentView;
-    private InputPasswordInteractor mFragmentInteractor;
+    private IInputPasswordView mFragmentView;
+    private IInputPasswordInteractor mFragmentInteractor;
 
     private InputPasswordAction action;
 
@@ -18,13 +17,13 @@ public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implem
     /* For UI Demo */
     private int testMode = 0;
 
-    public InputPasswordPresenterImpl(InputPasswordView fragmentView, InputPasswordInteractor interactor) {
+    public InputPasswordPresenterImpl(IInputPasswordView fragmentView, IInputPasswordInteractor interactor) {
         mFragmentView = fragmentView;
         mFragmentInteractor = interactor;
     }
 
     @Override
-    public InputPasswordView getView() {
+    public IInputPasswordView getView() {
         return mFragmentView;
     }
 

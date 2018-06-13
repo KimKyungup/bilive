@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:background="@color/background"
+    android:paddingBottom="6dp"
+    android:paddingEnd="22dp"
+    android:paddingStart="22dp"
+    android:paddingTop="15dp">
+
+    <ImageView
+        android:id="@+id/imageViewWalletHistory"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wallet_history_send" />
+
+    <TextView
+        android:id="@+id/textViewHistorySummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="비트코인 보냄"
+        android:textColor="@color/text_color_normal"
+        app:layout_constraintStart_toEndOf="@+id/imageViewWalletHistory"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHistoryDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:text="2018년 4월 27일, 오전 10시 17분"
+        android:textColor="@color/text_color_normal"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewWalletHistory"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="9dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewWalletHistory"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wallet_time" />
+
+    <TextView
+        android:id="@+id/textViewValue"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:text="-0.035BTC"
+        android:textAlignment="center"
+        android:textColor="@color/my_wallet_balance_decrease_color"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

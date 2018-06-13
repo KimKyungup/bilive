@@ -19,9 +19,9 @@ import org.qtum.wallet.ui.fragment_factory.Factory;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class IntroduceFragment extends BaseFragment implements IntroduceView{
+public class IntroduceFragment extends BaseFragment implements IIntroduceView {
 
-    private IntroducePresenter mFragmentPresenter;
+    private IIntroducePresenter mFragmentPresenter;
 
     private IntroduceFragmentPagerAdapter mFragmentPagerAdapter;
 
@@ -56,7 +56,7 @@ public class IntroduceFragment extends BaseFragment implements IntroduceView{
     }
 
     @Override
-    protected IntroducePresenter getPresenter() {
+    protected IIntroducePresenter getPresenter() {
         return mFragmentPresenter;
     }
 
