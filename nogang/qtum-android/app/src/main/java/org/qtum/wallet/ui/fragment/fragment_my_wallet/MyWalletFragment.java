@@ -85,29 +85,29 @@ public class MyWalletFragment extends BaseFragment implements IMyWalletView {
     }
 
     public void setAllCoinPage() {
-        viewPagerMyWallet.setCurrentItem(MyWalletChildFragment.MY_WALLET_ALL_COIN, true);
+        viewPagerMyWallet.setCurrentItem(MyWalletFragmentPagerAdapter.MY_WALLET_ALL_COIN, true);
     }
 
     public void setAllETHPage() {
-        viewPagerMyWallet.setCurrentItem(MyWalletChildFragment.MY_WALLET_ETH, true);
+        viewPagerMyWallet.setCurrentItem(MyWalletFragmentPagerAdapter.MY_WALLET_ETH, true);
     }
 
     public void setAllQTUMPage() {
-        viewPagerMyWallet.setCurrentItem(MyWalletChildFragment.MY_WALLET_QTUM, true);
+        viewPagerMyWallet.setCurrentItem(MyWalletFragmentPagerAdapter.MY_WALLET_QTUM, true);
     }
 
     private void updateTopMenu(int position) {
 
         switch (position) {
-            case MyWalletChildFragment.MY_WALLET_ALL_COIN: {
+            case MyWalletFragmentPagerAdapter.MY_WALLET_ALL_COIN: {
                 ((MainFragment) getParentFragment()).selectAllCoin();
                 break;
             }
-            case MyWalletChildFragment.MY_WALLET_ETH: {
+            case MyWalletFragmentPagerAdapter.MY_WALLET_ETH: {
                 ((MainFragment) getParentFragment()).selectETH();
                 break;
             }
-            case MyWalletChildFragment.MY_WALLET_QTUM: {
+            case MyWalletFragmentPagerAdapter.MY_WALLET_QTUM: {
                 ((MainFragment) getParentFragment()).selectQTUM();
                 break;
             }
