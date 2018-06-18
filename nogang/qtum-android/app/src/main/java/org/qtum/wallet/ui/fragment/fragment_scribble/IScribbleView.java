@@ -4,4 +4,8 @@ import org.qtum.wallet.ui.base.base_fragment.BaseFragmentView;
 
 public interface IScribbleView extends BaseFragmentView {
 
+    void startRefreshing();
+    void stopRefreshing();
+
+
 }

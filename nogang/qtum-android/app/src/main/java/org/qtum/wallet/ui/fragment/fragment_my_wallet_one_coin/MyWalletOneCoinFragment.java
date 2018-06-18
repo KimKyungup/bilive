@@ -3,8 +3,9 @@ package org.qtum.wallet.ui.fragment.fragment_my_wallet_one_coin;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -15,14 +16,14 @@ import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.fragment_my_wallet_send_coin.MyWalletSendCoinFragment;
-import org.qtum.wallet.ui.fragment.fragment_my_wallet_total.ListViewMyWalletAdapter;
+import org.qtum.wallet.ui.fragment.fragment_my_wallet_total.RecyclerViewMyWalletAdapter;
 import org.qtum.wallet.ui.fragment.fragment_my_wallet_total.MyWalletHistoryItem;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MyWalletOneCoinFragment extends BaseFragment implements IMyWalletOneCoinView {
+public class MyWalletOneCoinFragment extends BaseFragment implements IMyWalletOneCoinView, RecyclerViewMyWalletAdapter.OnItemClickListener {
 
     private IMyWalletOneCoinPresenter mFragmentPresenter;
 
@@ -38,10 +39,10 @@ public class MyWalletOneCoinFragment extends BaseFragment implements IMyWalletOn
     @BindView(R.id.swipeRefreshLayoutMyWallet)
     SwipeRefreshLayout swipeRefreshLayoutMyWallet;
 
-    @BindView(R.id.listViewMyWallet)
-    ListView listViewMyWallet;
+    @BindView(R.id.recyclerViewMyWallet)
+    RecyclerView recyclerViewMyWallet;
 
-    private ListViewMyWalletAdapter listViewMyWalletAdapter = null;
+    private RecyclerViewMyWalletAdapter myWalletAdapter = null;
 
     public static MyWalletOneCoinFragment newInstance(Context context) {
         Bundle args = new Bundle();
@@ -71,26 +72,28 @@ public class MyWalletOneCoinFragment extends BaseFragment implements IMyWalletOn
 
         swipeRefreshLayoutMyWallet.setOnRefreshListener(onRefreshListener);
 
-        listViewMyWalletAdapter = new ListViewMyWalletAdapter(getContext());
-        listViewMyWallet.setAdapter(listViewMyWalletAdapter);
-        listViewMyWallet.setOnItemClickListener(onItemClickListener);
+        myWalletAdapter = new RecyclerViewMyWalletAdapter(getContext());
+        myWalletAdapter.setOnItemClickListener(this);
 
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
-        listViewMyWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        recyclerViewMyWallet.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewMyWallet.setAdapter(myWalletAdapter);
+
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_SEND, "이더리움 보냄", "2018년 4월 27일, 오전 10시 17분", "-35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_RECV, "이더리움 받음", "2018년 4월 27일, 오전 10시 17분", "+35ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
+        myWalletAdapter.addItem(MyWalletHistoryItem.TYPE_WRITE, "이더리움으로 글 기록", "2018년 4월 27일, 오전 10시 17분", "-0.035ETH");
     }
 
     private void openMyWalletSendCoinFragment() {
@@ -126,13 +129,10 @@ public class MyWalletOneCoinFragment extends BaseFragment implements IMyWalletOn
         }
     };
 
-    ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener() {
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Toast.makeText(getContext(), "[Debug Toast] MyWalletOneCoinFragment=onItemClickListener", Toast.LENGTH_SHORT).show();
-        }
-    };
+    @Override
+    public void onItemClick(View view, int pos) {
+        Toast.makeText(getContext(), "[Debug Toast] MyWalletOneCoinFragment=onItemClickListener(row=" + String.valueOf(pos) + ")", Toast.LENGTH_SHORT).show();
+    }
 
     Runnable testRunnable = new Runnable() {
         @Override

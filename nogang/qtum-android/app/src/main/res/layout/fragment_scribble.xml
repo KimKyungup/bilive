@@ -81,8 +81,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewWriteHeader">
 
-        <ListView
-            android:id="@+id/listViewPost"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewPost"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
