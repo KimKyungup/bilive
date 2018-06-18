@@ -7,16 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.model.writeblock.WriteBlock;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewScribbleAdapter extends RecyclerView.Adapter<RecyclerViewScribbleAdapter.RecyclerViewScribbleViewHolder> {
 
-    private ArrayList<ScribbleItem> items = new ArrayList<ScribbleItem>();
+    private List<WriteBlock> items;
     private OnItemClickListener onItemClickLister;
 
-    public RecyclerViewScribbleAdapter() {
+    public RecyclerViewScribbleAdapter(List<WriteBlock> items) {
         super();
+        this.items = items;
     }
 
     @Override
@@ -28,9 +31,15 @@ public class RecyclerViewScribbleAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(RecyclerViewScribbleViewHolder holder, int position) {
-        ScribbleItem item = items.get(position);
-        holder.textViewPostInfo.setText(item.info);
-        holder.textViewPostBody.setText(item.body);
+        WriteBlock item = items.get(position);
+
+        StringBuilder testBuilder = new StringBuilder();
+        testBuilder.append(item.getTXHash());
+        testBuilder.append("\n\n");
+        testBuilder.append(item.getWrite());
+
+        holder.textViewPostInfo.setText(item.getBlockTime());
+        holder.textViewPostBody.setText(testBuilder.toString());
 
         if (items.size() == (position + 1)) {
             holder.textViewListViewDivider.setVisibility(View.INVISIBLE);
@@ -43,15 +52,6 @@ public class RecyclerViewScribbleAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    public void addItem(String body, String info) {
-        ScribbleItem post = new ScribbleItem(body, info);
-        items.add(post);
-    }
-
-    public void removeItem(int position) {
-        items.remove(position);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickLister) {

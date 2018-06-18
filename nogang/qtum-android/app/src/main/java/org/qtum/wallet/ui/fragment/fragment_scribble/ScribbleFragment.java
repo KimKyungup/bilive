@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,10 +24,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.dataprovider.receivers.network_state_receiver.NetworkStateReceiver;
+import org.qtum.wallet.dataprovider.receivers.network_state_receiver.listeners.NetworkStateListener;
+import org.qtum.wallet.model.writeblock.WriteBlock;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.fragment_main.MainFragment;
 import org.qtum.wallet.ui.fragment.fragment_scribble_detail.ScribbleDetailFragment;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -67,11 +73,21 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
 
     private RecyclerViewScribbleAdapter postAdapter = null;
 
+    // Write editor visible / invisible
     private boolean isWriteEditorExpanded = false;
 
+    // Footer 숨기기 위해
     private int scrollThreshold;
     private int prevScrollPosition = 0;
     private boolean isBottomMenuVisible = true;
+
+    // 추가 로딩
+    private boolean mLoadingFlag = false;
+    private int totalItemCount;
+
+    // Network state
+    private NetworkStateReceiver mNetworkStateReceiver;
+    private NetworkStateListener mNetworkStateListener;
 
     public static ScribbleFragment newInstance() {
         Bundle args = new Bundle();
@@ -102,52 +118,121 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
         scrollThreshold = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getContext().getResources().getDisplayMetrics());
         swipeRefreshLayoutPostList.setOnRefreshListener(onRefreshListener);
 
-        postAdapter = new RecyclerViewScribbleAdapter();
-        postAdapter.setOnItemClickListener(this);
-
         recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewPost.setAdapter(postAdapter);
         recyclerViewPost.setOnTouchListener(onTouchListener);
 
-        String testStr = "존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언\n" +
-                "\n" +
-                "오늘 김정은 위원장과 나는 완전한 비핵화를 통해 핵 없는 한반도를 실현하는 것이 우리의 공동 목표라는 것을 확인했습니다.\n" +
-                "\n" +
-                "북측이 먼저 취한 핵 동결 조치들은 대단히 중대한 의미를 가지고 있습니다. 한반도의 완전한 비핵화를 위한 소중한 출발이 될 것입니다. 앞으로 완전한 비핵화를 위해 남과 북이 더욱 긴밀히 협력해 나갈 것을 분명히 밝힙니다.\n" +
-                "\n" +
-                "우리는 또한 종전선언과 평화협정을 통해 한반도의 불안정한 정전 체제를 종식시키고 항구적이고 공고한 평화체제를 구축해나가기로 합의했습니다. 한반도를 둘러싼 국제 질서를 근본적으로 바꿀 수 있는 매우 중요한 합의입니다. \n" +
-                "\n" +
-                "#판문점 #문재인 #김정은 #넘어가 #한 #두자 #세글자 #네글자아 #글_양옆10";
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        String testStr = "존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언\n" +
+//                "\n" +
+//                "오늘 김정은 위원장과 나는 완전한 비핵화를 통해 핵 없는 한반도를 실현하는 것이 우리의 공동 목표라는 것을 확인했습니다.\n" +
+//                "\n" +
+//                "북측이 먼저 취한 핵 동결 조치들은 대단히 중대한 의미를 가지고 있습니다. 한반도의 완전한 비핵화를 위한 소중한 출발이 될 것입니다. 앞으로 완전한 비핵화를 위해 남과 북이 더욱 긴밀히 협력해 나갈 것을 분명히 밝힙니다.\n" +
+//                "\n" +
+//                "우리는 또한 종전선언과 평화협정을 통해 한반도의 불안정한 정전 체제를 종식시키고 항구적이고 공고한 평화체제를 구축해나가기로 합의했습니다. 한반도를 둘러싼 국제 질서를 근본적으로 바꿀 수 있는 매우 중요한 합의입니다. \n" +
+//                "\n" +
+//                "#판문점 #문재인 #김정은 #넘어가 #한 #두자 #세글자 #네글자아 #글_양옆10";
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
 
         selectAllPost();
         ((MainFragment) getParentFragment()).hideTopMenu();
     }
 
     @Override
-    public void startRefreshing() {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mNetworkStateReceiver = getMainActivity().getNetworkReceiver();
+        mNetworkStateListener = new NetworkStateListener() {
+            @Override
+            public void onNetworkStateChanged(boolean networkConnectedFlag) {
+                getPresenter().onNetworkStateChanged(networkConnectedFlag);
+            }
+        };
+        mNetworkStateReceiver.addNetworkStateListener(mNetworkStateListener);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mNetworkStateReceiver.removeNetworkStateListener(mNetworkStateListener);
+        setAdapterNull();
+    }
+
+    @Override
+    public void startRefreshAnimation() {
         if (swipeRefreshLayoutPostList != null) {
             swipeRefreshLayoutPostList.setRefreshing(true);
         }
     }
 
     @Override
-    public void stopRefreshing() {
+    public void setAdapterNull() {
+        // Not needed
+    }
+
+    @Override
+    public void updateWriteBlocks(List<WriteBlock> writeblocks) {
+        postAdapter = new RecyclerViewScribbleAdapter(writeblocks);
+        postAdapter.setOnItemClickListener(this);
+        recyclerViewPost.setAdapter(postAdapter);
+//        postAdapter.notifyDataSetChanged();
+        stopRefreshRecyclerAnimation();
+    }
+
+    @Override
+    public void stopRefreshRecyclerAnimation() {
         if (swipeRefreshLayoutPostList != null) {
             swipeRefreshLayoutPostList.setRefreshing(false);
         }
+    }
+
+    @Override
+    public String getWriteText() {
+        return editTextEditor.getText().toString();
+    }
+
+    @Override
+    public void tost(String s) {
+        Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public ScribbleInteractorImpl.SendTxCallBack getSendTransactionCallback() {
+        return sendCallback;
+    }
+
+    @Override
+    public void loadNewWrite() {
+        mLoadingFlag = true;
+        //mWriteAdapter.setLoadingFlag(true);
+        postAdapter.notifyItemChanged(totalItemCount - 1);
+    }
+
+    @Override
+    public void addHistory(int positionStart, int itemCount, List<WriteBlock> historyList) {
+        mLoadingFlag = false;
+        postAdapter.notifyItemRangeChanged(positionStart, itemCount);
+    }
+
+    @Override
+    public void notifyConfirmHistory(final int notifyPosition) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                postAdapter.notifyItemChanged(notifyPosition);
+            }
+        });
     }
 
     private void showKeyboard()
@@ -254,7 +339,7 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
                 break;
             }
             case R.id.imageViewWriteComplete: {
-                getPresenter().onWriteComplete();
+                getPresenter().write();
                 reduceWriteEditor();
 
                 /* For test */
@@ -270,8 +355,7 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
     SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            Handler testHandler = new Handler();
-            testHandler.postDelayed(testRunnable, 1000);
+            getPresenter().onRefresh();
         }
     };
 
@@ -322,12 +406,17 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
         }
     };
 
-    Runnable testRunnable = new Runnable() {
+    private ScribbleInteractorImpl.SendTxCallBack sendCallback = new ScribbleInteractorImpl.SendTxCallBack() {
         @Override
-        public void run() {
-            swipeRefreshLayoutPostList.setRefreshing(false);
+        public void onSuccess() {
+            setAlertDialog(org.qtum.wallet.R.string.payment_completed_successfully, "Ok", BaseFragment.PopUpType.confirm);
+            getPresenter().loadAndUpdateWrite();
+        }
+
+        @Override
+        public void onError(String error) {
+            dismissProgressDialog();
+            setAlertDialog(org.qtum.wallet.R.string.error, error, "Ok", BaseFragment.PopUpType.error);
         }
     };
-
-
 }

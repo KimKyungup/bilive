@@ -6,6 +6,12 @@ public interface IScribblePresenter extends BaseFragmentPresenter {
 
     void onAllPostSelected();
     void onMyPostSelected();
-    void onWriteComplete();
 
+    void onRefresh();
+
+    void onNetworkStateChanged(boolean networkConnectedFlag);
+
+    void write();
+    void loadAndUpdateWrite();
+    void onLastItem(final int currentItemCount);
 }
