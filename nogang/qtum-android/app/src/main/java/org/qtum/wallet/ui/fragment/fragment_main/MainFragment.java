@@ -133,11 +133,6 @@ public class MainFragment extends BaseFragment implements IMainView {
         openSettingFragment();
     }
 
-    public void openMainWriteDetailFragment() {
-        ScribbleDetailFragment fragment = ScribbleDetailFragment.newInstance(getContext());
-        openFragment(fragment);
-    }
-
     public void openMainMyWalletSendFragment() {
         MyWalletSendCoinFragment fragment = MyWalletSendCoinFragment.newInstance(getContext());
         openFragment(fragment);

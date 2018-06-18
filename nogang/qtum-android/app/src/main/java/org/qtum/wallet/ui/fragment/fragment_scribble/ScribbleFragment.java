@@ -305,8 +305,8 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
         textViewPostSelectorMyPost.setTextColor(ContextCompat.getColor(getContext(), R.color.post_selector_font_color));
     }
 
-    private void openScribbleDetailFragment() {
-        ScribbleDetailFragment fragment = ScribbleDetailFragment.newInstance(getContext());
+    private void openScribbleDetailFragment(int index) {
+        ScribbleDetailFragment fragment = ScribbleDetailFragment.newInstance(getContext(), index);
         ((MainActivity)getActivity()).openFragment(fragment);
     }
 
@@ -362,7 +362,7 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
     @Override
     public void onItemClick(View view, int pos) {
         Toast.makeText(getContext(), "[Debug Toast] listViewPost=onItemClickListener(row=" + String.valueOf(pos) + ")", Toast.LENGTH_SHORT).show();
-        openScribbleDetailFragment();
+        openScribbleDetailFragment(pos);
     }
 
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {

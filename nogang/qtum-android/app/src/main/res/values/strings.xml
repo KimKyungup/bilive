@@ -335,6 +335,8 @@
     <string name="import_wallet_instruction">적어둔 백업 단어를 순서대로 입력하세요.</string>
     <string name="import_wallet_import">불러오기</string>
 
+    // ETC
+    <string name="share">공유하기</string>
 
 
     <string name="sample_post_body">존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언
