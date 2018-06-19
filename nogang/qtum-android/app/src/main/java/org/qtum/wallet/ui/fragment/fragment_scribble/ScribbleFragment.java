@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class ScribbleFragment extends BaseFragment implements IScribbleView, RecyclerViewScribbleAdapter.OnItemClickListener {
+
+    private final int SCROLL_THRESHOLD_IN_DIP = 20;
 
     private IScribblePresenter mFragmentPresenter;
 
@@ -76,14 +79,17 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
     // Write editor visible / invisible
     private boolean isWriteEditorExpanded = false;
 
-    // Footer 숨기기 위해
+    // Footer 숨기고 보이기 위해
     private int scrollThreshold;
-    private int prevScrollPosition = 0;
+    private int scrollMoved = 0;
     private boolean isBottomMenuVisible = true;
 
     // 추가 로딩
     private boolean mLoadingFlag = false;
+    private int visibleItemCount;
     private int totalItemCount;
+    private int pastVisibleItems;
+
 
     // Network state
     private NetworkStateReceiver mNetworkStateReceiver;
@@ -115,34 +121,11 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
     public void initializeViews() {
         super.initializeViews();
 
-        scrollThreshold = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getContext().getResources().getDisplayMetrics());
+        scrollThreshold = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SCROLL_THRESHOLD_IN_DIP, getContext().getResources().getDisplayMetrics());
         swipeRefreshLayoutPostList.setOnRefreshListener(onRefreshListener);
 
         recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewPost.setOnTouchListener(onTouchListener);
-
-//        String testStr = "존경하는 남과 북의 국민 여러분, 해외 동포 여러분. 김정은 위원장과 나는 평화를 바라는 8천만 겨레의 염원으로 역사적인 만남을 갖고 귀중한 합의를 이루었습니다. 한반도에 더 이상 전쟁은 없을 것이며 새로운 평화의 시대가 열리고 있음을 함께 선언하였습니다. 긴 세월 동안 분단의 아픔과 서러움 속에서도 끝내 극복할 수 있다고 믿었기에 우리는 이 자리에 설 수 있었습니다. #판문점선언\n" +
-//                "\n" +
-//                "오늘 김정은 위원장과 나는 완전한 비핵화를 통해 핵 없는 한반도를 실현하는 것이 우리의 공동 목표라는 것을 확인했습니다.\n" +
-//                "\n" +
-//                "북측이 먼저 취한 핵 동결 조치들은 대단히 중대한 의미를 가지고 있습니다. 한반도의 완전한 비핵화를 위한 소중한 출발이 될 것입니다. 앞으로 완전한 비핵화를 위해 남과 북이 더욱 긴밀히 협력해 나갈 것을 분명히 밝힙니다.\n" +
-//                "\n" +
-//                "우리는 또한 종전선언과 평화협정을 통해 한반도의 불안정한 정전 체제를 종식시키고 항구적이고 공고한 평화체제를 구축해나가기로 합의했습니다. 한반도를 둘러싼 국제 질서를 근본적으로 바꿀 수 있는 매우 중요한 합의입니다. \n" +
-//                "\n" +
-//                "#판문점 #문재인 #김정은 #넘어가 #한 #두자 #세글자 #네글자아 #글_양옆10";
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
-//        postAdapter.addItem(testStr, "2018년 4월 27일, 오전 10시 17분 | 0.004225 QTUM | 내 글");
+        recyclerViewPost.addOnScrollListener(onScrollListener);
 
         selectAllPost();
         ((MainFragment) getParentFragment()).hideTopMenu();
@@ -365,44 +348,52 @@ public class ScribbleFragment extends BaseFragment implements IScribbleView, Rec
         openScribbleDetailFragment(pos);
     }
 
-    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            int action = motionEvent.getAction();
-            switch (action) {
-                case MotionEvent.ACTION_DOWN: {
-                    prevScrollPosition = (int) motionEvent.getY();
-                    break;
-                }
-                case MotionEvent.ACTION_MOVE: {
-                    int mScrollY = (int) motionEvent.getY();
+    RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
 
-                    if (isBottomMenuVisible) {
-                        if (prevScrollPosition - scrollThreshold > mScrollY) {
-                            ((MainFragment) getParentFragment()).hideBottomBar();
-                            isBottomMenuVisible = false;
-                        }
-                        else if (prevScrollPosition < mScrollY) {
-                            prevScrollPosition = mScrollY;
-                        }
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            LinearLayoutManager manager = ((LinearLayoutManager) recyclerView.getLayoutManager());
+
+            /* ??? 무슨 코드인지 모르겠음 */ // TODO - setEnabled()를 변경해야 할 필요한 이유가 있는가?
+            if (!swipeRefreshLayoutPostList.isRefreshing())
+                if (manager.findFirstCompletelyVisibleItemPosition() == 0)
+                    swipeRefreshLayoutPostList.setEnabled(true);
+                else
+                    swipeRefreshLayoutPostList.setEnabled(false);
+
+            /* 최하단으로 스크롤시 추가 Write 보이기 */
+            if (dy > 0) {
+                if (!mLoadingFlag) {
+                    visibleItemCount = manager.getChildCount();
+                    totalItemCount = manager.getItemCount();
+                    pastVisibleItems = manager.findFirstVisibleItemPosition();
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 1) {
+                        getPresenter().onLastItem(totalItemCount - 1);
                     }
-                    else {
-                        if (prevScrollPosition + scrollThreshold < mScrollY) {
-                            ((MainFragment) getParentFragment()).showBottomBar();
-                            isBottomMenuVisible = true;
-                        }
-                        else if (prevScrollPosition > mScrollY) {
-                            prevScrollPosition = mScrollY;
-                        }
-                    }
-                    break;
-                }
-                case MotionEvent.ACTION_UP: {
-                    prevScrollPosition = (int) motionEvent.getY();
-                    break;
                 }
             }
-            return false;
+
+            /* 위아래 Scrolling시 하단 메뉴 보이기/숨기기 애니메이션 관련 코드 */
+            if (scrollMoved > 0 && dy < 0) {
+                scrollMoved = 0;
+            }
+            else if (scrollMoved < 0 && dy > 0) {
+                scrollMoved = 0;
+            }
+            scrollMoved += dy;
+            if (scrollMoved > scrollThreshold) {
+                if (isBottomMenuVisible) {
+                    ((MainFragment) getParentFragment()).hideBottomBar();
+                    isBottomMenuVisible = false;
+                }
+            } else if (scrollMoved < (-scrollThreshold)) {
+                if (!isBottomMenuVisible) {
+                    ((MainFragment) getParentFragment()).showBottomBar();
+                    isBottomMenuVisible = true;
+                }
+            }
         }
     };
 
