@@ -252,6 +252,8 @@
     <string name="password_retry_guide_description">한번 더 입력해 주세요.</string>
     <string name="password_setting_guide_description">비밀번호를 설정해주세요.</string>
     <string name="password_wrong_guide_description">암호가 일치하지 않습니다.\n처음부터 입력해 주세요.</string>
+    <string name="password_correct_guide_description">암호가 일치합니다.\n로그인을 진행합니다.</string>
+    <string name="password_register_guide_description">저장된 암호가 없습니다.\n암호 등록을 진행 해 주세요.</string>
 
     // Input Fingerprint Activity
     <string name="fingerprint">지문</string>
