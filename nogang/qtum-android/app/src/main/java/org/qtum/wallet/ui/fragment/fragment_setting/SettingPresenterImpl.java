@@ -6,6 +6,7 @@ public class SettingPresenterImpl extends BaseFragmentPresenterImpl implements I
 
     private ISettingView mFragmentView;
     private ISettingInteractor mFragmentInteractor;
+    private boolean mTouchState;
 
     public SettingPresenterImpl(ISettingView fragmentView, ISettingInteractor interactor) {
         mFragmentView = fragmentView;
@@ -17,4 +18,32 @@ public class SettingPresenterImpl extends BaseFragmentPresenterImpl implements I
         return mFragmentView;
     }
 
+    public boolean loadSettingValue() {
+        mTouchState = getInteractor().getTouchIdEnable();
+        getView().setFingerprintState(mTouchState);
+
+        return true;
+    }
+
+    public ISettingInteractor getInteractor() {
+        return mFragmentInteractor;
+    }
+
+    public void toggleFingerprintState() {
+
+        if ( getInteractor().IsAvailableFingerprint() == true )
+        {
+            if (mTouchState) {
+                mTouchState = false;
+            }
+            else {
+                mTouchState = true;
+            }
+            getView().setFingerprintState(mTouchState);
+            getInteractor().setTouchIdEnable(mTouchState);
+        }
+    }
+    public void setFingerprintEnable() {
+        getView().openInputFingerprintFragment();
+    }
 }

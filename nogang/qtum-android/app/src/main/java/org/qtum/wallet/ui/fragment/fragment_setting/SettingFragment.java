@@ -70,27 +70,21 @@ public class SettingFragment extends BaseFragment implements ISettingView {
         super.initializeViews();
 
         ((MainFragment) getParentFragment()).hideTopMenu();
+
+        getPresenter().loadSettingValue();
     }
 
-    private void setFingerprintState(boolean state) {
-        fingerprintState = state;
+    public void openInputFingerprintFragment() {
+        Fragment fragment = InputFingerprintFragment.newInstance(getContext());
+        openRootFragment(fragment);
+    }
 
+    public void setFingerprintState(boolean state) {
         if (state) {
             imageViewFingerprintOnOff.setImageResource(R.drawable.tumbler_on);
         }
         else {
             imageViewFingerprintOnOff.setImageResource(R.drawable.tumbler_off);
-        }
-    }
-
-    private void toggleFingerprintState() {
-        if (fingerprintState) {
-            fingerprintState = false;
-            imageViewFingerprintOnOff.setImageResource(R.drawable.tumbler_off);
-        }
-        else {
-            fingerprintState = true;
-            imageViewFingerprintOnOff.setImageResource(R.drawable.tumbler_on);
         }
     }
 
@@ -127,6 +121,7 @@ public class SettingFragment extends BaseFragment implements ISettingView {
             }
             case R.id.frameLayoutBtnFingerprint: {
                 Toast.makeText(getContext(), "[Debug Toast] frameLayoutBtnFingerprint", Toast.LENGTH_SHORT).show();
+                getPresenter().setFingerprintEnable();
                 break;
             }
             case R.id.frameLayoutBtnLogout: {
@@ -134,8 +129,7 @@ public class SettingFragment extends BaseFragment implements ISettingView {
                 break;
             }
             case R.id.imageViewFingerprintOnOff: {
-                Toast.makeText(getContext(), "[Debug Toast] imageViewFingerprintOnOff", Toast.LENGTH_SHORT).show();
-                toggleFingerprintState();
+                getPresenter().toggleFingerprintState();
                 break;
             }
         }
