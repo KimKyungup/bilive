@@ -7,6 +7,7 @@ import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSettingSharedPreference;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
+import org.qtum.wallet.datastorage.ScribbleSharedPreference;
 import org.qtum.wallet.datastorage.listeners.LanguageChangeListener;
 import org.qtum.wallet.model.gson.DGPInfo;
 import org.qtum.wallet.model.gson.FeePerKb;

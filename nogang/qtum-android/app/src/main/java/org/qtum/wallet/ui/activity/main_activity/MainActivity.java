@@ -45,12 +45,14 @@ import org.qtum.wallet.dataprovider.services.update_service.UpdateService;
 import org.qtum.wallet.datastorage.HistoryList;
 import org.qtum.wallet.datastorage.KeyStorage;
 import org.qtum.wallet.datastorage.QtumSharedPreference;
+import org.qtum.wallet.datastorage.ScribbleSharedPreference;
 import org.qtum.wallet.model.gson.history.History;
 import org.qtum.wallet.ui.activity.splash_activity.SplashActivity;
 import org.qtum.wallet.ui.base.base_activity.BaseActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 
 import org.qtum.wallet.ui.fragment.fragment_input_fingerprint.InputFingerprintFragment;
+import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordAction;
 import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordFragment;
 import org.qtum.wallet.ui.fragment.fragment_introduce.IntroduceFragment;
 import org.qtum.wallet.ui.fragment.fragment_main.MainAction;
@@ -621,8 +623,20 @@ public class MainActivity extends BaseActivity implements MainActivityView, Wear
 
     @Override
     public void openStartPageFragment(boolean isLogin) {
+        Fragment fragment;
+        if (isLogin){
+            if (ScribbleSharedPreference.getInstance().getTouchIdEnable(getContext()) == true) {
+                fragment = InputFingerprintFragment.newInstance(getContext());
+            }
+            else {
+                fragment = InputPasswordFragment.newInstance(getContext(), InputPasswordAction.AUTHENTICATION);
+            }
+        }
+        else {
+            fragment = IntroduceFragment.newInstance(getContext());
+        }
         //Fragment fragment = StartPageFragment.newInstance(isLogin, getContext());
-        Fragment fragment = IntroduceFragment.newInstance(getContext());
+        
         //Fragment fragment = InputPasswordFragment.newInstance(getContext());
         //Fragment fragment = InputFingerprintFragment.newInstance(getContext());
         //Fragment fragment = MainFragment.newInstance(getContext(), MainAction.WRITE);
