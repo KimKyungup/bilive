@@ -17,4 +17,5 @@ public interface IInputPasswordView extends BaseFragmentView {
     void setKeypadWrongImage();
 
     void openInputFingerprintFragment();
+    void openMainFragment();
 }

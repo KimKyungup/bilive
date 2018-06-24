@@ -11,6 +11,8 @@ import android.widget.TextView;
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.fragment_input_fingerprint.InputFingerprintFragment;
+import org.qtum.wallet.ui.fragment.fragment_main.MainAction;
+import org.qtum.wallet.ui.fragment.fragment_main.MainFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
 
 import butterknife.BindView;
@@ -165,6 +167,12 @@ public class InputPasswordFragment extends BaseFragment implements IInputPasswor
     public void openInputFingerprintFragment()
     {
         Fragment fragment = InputFingerprintFragment.newInstance(getContext());
+        openRootFragment(fragment);
+    }
+
+    @Override
+    public void openMainFragment() {
+        Fragment fragment = MainFragment.newInstance(getContext(), MainAction.WRITE);
         openRootFragment(fragment);
     }
 

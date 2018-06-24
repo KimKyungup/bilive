@@ -7,4 +7,7 @@ public interface IInputFingerprintInteractor {
 
     Context getContext();
     FingerprintManager getFingerprintManager();
+
+    boolean IsEnabledTouchLogin();
+    void SetTouchLoginActivate();
 }

@@ -110,7 +110,7 @@ public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implem
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    getView().openInputFingerprintFragment();
+                                    getView().openMainFragment();
                                 }
                             }, 2000);
                         } else {

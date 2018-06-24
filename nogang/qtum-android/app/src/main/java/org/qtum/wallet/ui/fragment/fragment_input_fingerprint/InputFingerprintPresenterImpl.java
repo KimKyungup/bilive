@@ -50,6 +50,8 @@ public class InputFingerprintPresenterImpl extends BaseFragmentPresenterImpl imp
 
         mCryptoObject = new FingerprintManager.CryptoObject(cipher);
         fpHelper = new IInputFingerprintHelper(getInteractor().getContext(), this);
+
+        fpHelper.startAuth(mFingerprintManager, mCryptoObject);
     }
 
     @Override
@@ -69,9 +71,10 @@ public class InputFingerprintPresenterImpl extends BaseFragmentPresenterImpl imp
 
     @Override
     public void allowFingerPrint() {
-        fpHelper.startAuth(mFingerprintManager, mCryptoObject);
+        getInteractor().SetTouchLoginActivate();
     }
 
+    // 이 아랫것들 전부 별도 class 만들어서 관리 필요.
     @TargetApi(Build.VERSION_CODES.M)
     public void generateKey() {
         try {
@@ -84,19 +87,14 @@ public class InputFingerprintPresenterImpl extends BaseFragmentPresenterImpl imp
             keyGenerator = KeyGenerator.getInstance(
                     KeyProperties.KEY_ALGORITHM_AES,
                     "AndroidKeyStore");
-        } catch (NoSuchAlgorithmException |
-                NoSuchProviderException e) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new RuntimeException(
                     "Failed to get KeyGenerator instance", e);
         }
 
         try {
             keyStore.load(null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (java.security.cert.CertificateException e) {
+        } catch (IOException | NoSuchAlgorithmException | java.security.cert.CertificateException e) {
             e.printStackTrace();
         }
 
@@ -123,18 +121,13 @@ public class InputFingerprintPresenterImpl extends BaseFragmentPresenterImpl imp
                     KeyProperties.KEY_ALGORITHM_AES + "/"
                             + KeyProperties.BLOCK_MODE_CBC + "/"
                             + KeyProperties.ENCRYPTION_PADDING_PKCS7);
-        } catch (NoSuchAlgorithmException |
-                NoSuchPaddingException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             throw new RuntimeException("Failed to get Cipher", e);
         }
 
         try {
             keyStore.load(null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (java.security.cert.CertificateException e) {
+        } catch (IOException | NoSuchAlgorithmException | java.security.cert.CertificateException e) {
             e.printStackTrace();
         }
 
