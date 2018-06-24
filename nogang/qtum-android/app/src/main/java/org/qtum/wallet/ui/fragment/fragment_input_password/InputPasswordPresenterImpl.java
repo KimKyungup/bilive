@@ -112,7 +112,7 @@ public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implem
                                 public void run() {
                                     getView().openInputFingerprintFragment();
                                 }
-                            }, 3000);
+                            }, 2000);
                         } else {
                             getView().setInputNumberPinImage(0);
                             getView().setDescriptionMessage(R.string.password_wrong_guide_description);
@@ -124,7 +124,6 @@ public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implem
                     }
                     break;
                 case 3:
-                    getView().openInputFingerprintFragment();
                     break;
             }
         }
@@ -153,10 +152,12 @@ public class InputPasswordPresenterImpl extends BaseFragmentPresenterImpl implem
         switch (action) {
             case REGISTER: {    // 등록모드
                 getView().setDescriptionMessage(R.string.password_setting_guide_description);
+                testMode = 0;
                 break;
             }
             case AUTHENTICATION: {  // 인증모드
                 getView().setDescriptionMessage(R.string.password_input_guide_description);
+                testMode = 2;
                 break;
             }
         }
