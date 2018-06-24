@@ -28,7 +28,7 @@ class MainActivityInteractorImpl implements MainActivityInteractor {
 
     @Override
     public boolean getKeyGeneratedInstance() {
-        return QtumSharedPreference.getInstance().getKeyGeneratedInstance(mContext);
+        return ScribbleSharedPreference.getInstance().getKeyGeneratedInstance(mContext);
     }
 
     @Override
