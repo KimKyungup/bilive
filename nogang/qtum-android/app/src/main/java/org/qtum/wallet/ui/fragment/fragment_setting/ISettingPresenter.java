@@ -6,4 +6,6 @@ public interface ISettingPresenter extends BaseFragmentPresenter {
 
     boolean loadSettingValue();
     void toggleFingerprintState();
+
+    void setFingerprintEnable();
 }
