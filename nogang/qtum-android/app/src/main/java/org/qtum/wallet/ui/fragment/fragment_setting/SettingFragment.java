@@ -5,12 +5,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.support.v4.app.Fragment;
 
 import org.qtum.wallet.R;
 import org.qtum.wallet.ui.activity.main_activity.MainActivity;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
 import org.qtum.wallet.ui.fragment.fragment_back_up_wallet.BackUpWalletFragment;
 import org.qtum.wallet.ui.fragment.fragment_import_wallet.ImportWalletFragment;
+import org.qtum.wallet.ui.fragment.fragment_input_fingerprint.InputFingerprintFragment;
 import org.qtum.wallet.ui.fragment.fragment_main.MainFragment;
 
 import butterknife.BindView;
