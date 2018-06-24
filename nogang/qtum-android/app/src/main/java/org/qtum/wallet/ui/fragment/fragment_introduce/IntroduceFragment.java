@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.qtum.wallet.R;
+import org.qtum.wallet.datastorage.ScribbleSharedPreference;
 import org.qtum.wallet.ui.base.base_fragment.BaseFragment;
+import org.qtum.wallet.ui.fragment.fragment_input_fingerprint.InputFingerprintFragment;
 import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordAction;
 import org.qtum.wallet.ui.fragment.fragment_input_password.InputPasswordFragment;
 import org.qtum.wallet.ui.fragment_factory.Factory;
@@ -156,7 +158,18 @@ public class IntroduceFragment extends BaseFragment implements IIntroduceView {
 
     private void openInputPasswordFragment()
     {
-        Fragment fragment = InputPasswordFragment.newInstance(getContext(), InputPasswordAction.REGISTER);
+        Fragment fragment;
+        if ( ScribbleSharedPreference.getInstance().getKeyGeneratedInstance(getContext()) == true ) {
+            if (ScribbleSharedPreference.getInstance().getTouchIdEnable(getContext()) == true) {
+                fragment = InputFingerprintFragment.newInstance(getContext());
+            }
+            else {
+                fragment = InputPasswordFragment.newInstance(getContext(), InputPasswordAction.AUTHENTICATION);
+            }
+        }
+        else {
+            fragment = InputPasswordFragment.newInstance(getContext(), InputPasswordAction.REGISTER);
+        }
         openRootFragment(fragment);
     }
 
