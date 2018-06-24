@@ -48,6 +48,10 @@ public class ScribbleSharedPreference {
         mEditor.apply();
     }
 
+    public boolean getTouchIdEnable(Context context) {
+        return context.getSharedPreferences(SCRIBBLE_DATA_STORAGE, Context.MODE_PRIVATE).getBoolean(TOUCH_ID_ENABLE, false);
+    }
+
     public void setKeyGeneratedInstance(Context context, boolean isKeyGenerated) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences(SCRIBBLE_DATA_STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
